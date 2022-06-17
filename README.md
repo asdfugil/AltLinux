@@ -3,11 +3,19 @@
 This is merely a fork to see if I can get the program running on Ubuntu 22.04 x64.
 
 ## Get started
-Run the following command in your terminal to install the dependencies:
+Install the dependencies:
 ```
 sudo apt-get install usbmuxd libimobiledevice6 libimobiledevice-utils wget curl libavahi-compat-libdnssd-dev docker.io
 ```  
   
+Clone the repository:
+```  
+git clone https://github.com/maxasix/AltShell  
+```  
+```  
+cd AltShell  
+```  
+    
 Before running the script, run the following commands:  
 ```
 docker pull nyamisty/alt_anisette_server
