@@ -1,4 +1,4 @@
-# AltServer-Linux-ShellScript
+# AltShell (Originally AltServer-Linux-ShellScript)
 
 This is merely a fork to see if I can get the program running on Ubuntu 22.04.
 
