@@ -6,7 +6,7 @@
 cd "$(dirname "$0")" || exit
 echo "Checking source"
 if [[ ! -e "AltStore.ipa" ]]; then
-    curl -L https://cdn.altstore.io/file/altstore/apps/altstore/1_4_9.ipa > AltStore.ipa
+    curl -L https://cdn.altstore.io/file/altstore/apps/altstore/1_5.ipa > AltStore.ipa
 fi
 if [[ ! -e "main" ]]; then
     wget https://github.com/powenn/AltServer-Linux-ShellScript/raw/main/main
