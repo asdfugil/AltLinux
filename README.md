@@ -1,8 +1,21 @@
 # AltShell (Originally AltServer-Linux-ShellScript)
 
-This is merely a fork to see if I can get the program running on Ubuntu 22.04 (AMD64).
+This is merely a fork to see if I can get the program running on Ubuntu 22.04 x64.
 
+## Get started
+```
+sudo apt-get install usbmuxd libimobiledevice6 libimobiledevice-utils
+```
+```
+sudo apt-get install wget curl libavahi-compat-libdnssd-dev
+```
+Please storage your ipa files into AltServer/ipa
 
+run 
+```
+./run.sh
+```
+to start
 
 
 # Original description 
