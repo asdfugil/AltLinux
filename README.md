@@ -7,11 +7,10 @@ Run the following command in your terminal to install the dependencies:
 ```
 sudo apt-get install usbmuxd libimobiledevice6 libimobiledevice-utils wget curl libavahi-compat-libdnssd-dev
 ```
-<If you intend to install something other than AltStore, store your ipa files into an "ipa" folder>
 Run the following command to start the script:
 ```
 ./run.sh
 ```
-
-AltServer-Linux was made by [NyaMisty](https://github.com/NyaMisty)
+  
+AltServer-Linux was made by [NyaMisty](https://github.com/NyaMisty)  
 Original script was made by [powenn](https://github.com/powenn)
