@@ -1,5 +1,6 @@
 #!/bin/bash
-# Author of the script : powen
+# Original author of the script : powen
+# Edited some bits : maxasix
 
 # Check source and permission
 cd "$(dirname "$0")" || exit
@@ -33,7 +34,7 @@ HELP() {
 cat << EOF
     
 #####################################
-#  Welcome to the AltServer script  #
+#     Welcome to the AltShell       #
 #####################################
 
 ScriptUsage: [OPTION]
@@ -53,7 +54,8 @@ OPTIONS
   u, --Update
     Update this script or AltServer
 
-For more information: https://github.com/powenn/AltServer-Linux-ShellScript
+For more information: https://github.com/maxasix/AltShell
+For extra information: https://github.com/powenn/AltServer-Linux-ShellScript
 
 EOF
 }
@@ -97,7 +99,7 @@ UpdateNotification
 
 RunScript=0
 while [ $RunScript = 0 ] ; do
-    echo "Enter OPTION to continue"
+    echo "Enter an option to continue. For a list of options, type h or --Help"
     read option
     case "$option" in
     
