@@ -12,5 +12,5 @@ Run the following command to start the script:
 ./run.sh
 ```
   
-AltServer-Linux was made by [NyaMisty](https://github.com/NyaMisty)  
-Original script was made by [powenn](https://github.com/powenn)
+AltServer-Linux and alt-anisette-server made by [NyaMisty](https://github.com/NyaMisty)  
+Original script made by [powenn](https://github.com/powenn)
