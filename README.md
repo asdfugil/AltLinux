@@ -1,5 +1,12 @@
 # AltServer-Linux-ShellScript
 
+This is merely a fork to see if I can get the program running on Ubuntu 22.04.
+
+
+
+
+# Original description 
+
 Works on debian 11 x64 !!
 
 And works on pinephone (tested on mobian)
