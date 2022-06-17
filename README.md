@@ -18,7 +18,7 @@ docker run -d --rm -p 6969:6969 -it nyamisty/alt_anisette_server
 ```  
 curl 127.0.0.1:6969
 ```  
-If the last command shows output that starts with `{"X-Apple-I-Client-Time":`, continue. If it doesn't, wait for a few seconds and try again.  
+If the last command shows output that starts with `{"X-Apple-I-Client-Time":`, continue. If it doesn't, wait for a few seconds and try again. Then run:  
 ```  
 export ALTSERVER_ANISETTE_SERVER="http://127.0.0.1:6969"
 ```  
