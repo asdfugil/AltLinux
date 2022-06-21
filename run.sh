@@ -26,7 +26,7 @@ fi
 
 # Version
 LocalVersion=$(sed -n 1p version)
-LatestVersion=$(curl -Lsk 'https://github.com/powenn/AltServer-Linux-ShellScript/raw/main/version')
+LatestVersion=$(curl -Lsk 'https://github.com/maxasix/AltShell/raw/main/version')
 
 
 # Help message
@@ -55,7 +55,6 @@ OPTIONS
     Update this script or AltServer
 
 For more information: https://github.com/maxasix/AltShell
-For extra information: https://github.com/powenn/AltServer-Linux-ShellScript
 
 EOF
 }
@@ -128,7 +127,7 @@ while [ $RunScript = 0 ] ; do
     idevicepair pair
     ;;
   u|--Update )
-    curl -Lsk 'https://github.com/powenn/AltServer-Linux-ShellScript/raw/main/update.sh' | bash
+    curl -Lsk 'https://github.com/maxasix/AltShell/raw/main/update.sh' | bash
     ;;
     esac
 
