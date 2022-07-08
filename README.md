@@ -2,7 +2,16 @@
 
 This is a GUI for AltServer-Linux. Currently it is designed to work with Ubuntu 22.04 x64.
 
-## Get started
+Features:
+- A straightforward GUI
+- A tray menu that works just like on Windows
+- Sideloading AltStore
+- Sideloading other apps without AltStore
+- While the tray icon is present, AltServer runs in the background in tethered mode
+
+The program is in its very early state, so any feedback or contributions are welcome.
+
+## READ THIS TO GET STARTED
 Install the dependencies:
 ```
 sudo apt-get install binutils python3-pip git gir1.2-appindicator3-0.1 usbmuxd libimobiledevice6 libimobiledevice-utils wget curl libavahi-compat-libdnssd-dev docker.io
