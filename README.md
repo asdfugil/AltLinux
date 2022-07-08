@@ -1,47 +1,47 @@
 # AltLinux (Formerly AltShell)
 
-This is merely a fork to see if I can get the program running on Ubuntu 22.04 x64.
+This is a GUI for AltServer-Linux. Currently it is designed to work with Ubuntu 22.04 x64.
 
 ## Get started
 Install the dependencies:
 ```
-sudo apt-get install usbmuxd libimobiledevice6 libimobiledevice-utils wget curl libavahi-compat-libdnssd-dev docker.io
+sudo apt-get install binutils python3-pip git gir1.2-appindicator3-0.1 usbmuxd libimobiledevice6 libimobiledevice-utils wget curl libavahi-compat-libdnssd-dev docker.io
 ```  
   
-Clone the repository:
+Install pyinstaller:
 ```  
-git clone https://github.com/maxasix/AltShell  
-```  
-```  
-cd AltShell  
-```  
-    
-Before running the script, run the following commands:  
-```
-docker pull nyamisty/alt_anisette_server
-```  
-```  
-docker run -d --rm -p 6969:6969 -it nyamisty/alt_anisette_server
-```  
-```  
-curl 127.0.0.1:6969
-```  
-If the last command shows output that starts with `{"X-Apple-I-Client-Time":`, continue. If it doesn't, wait for a few seconds and try again. Then run:  
-```  
-export ALTSERVER_ANISETTE_SERVER="http://127.0.0.1:6969"
-```  
-  
-Run the following command to start the script:
-```
-./run.sh
+pip install pyinstaller
 ```  
 
-## Newbie's corner
-Once the script is started, type "p" to pair your device.  
-Accept the trust dialog on the screen of your device, then type "p" again.  
-Then type "i". Choose option 1 if you want to install AltStore.  
-IMPORTANT: type your e-mail in **lowercase** letters, otherwise it might not work.
+Configure docker to work without sudo:
+```
+sudo groupadd docker
+```
+```
+sudo usermod -aG docker $USER
+```
+```
+newgrp docker
+```
+
+Reboot your computer for changes to apply.
+
+Now you can download and install [the DEB package](https://github.com/maxasix/AltLinux/releases).
   
+If you wish to compile the program instead, run the following commands:
+
+```
+git clone https://github.com/maxasix/AltLinux
+```  
+
+```
+cd AltLinux
+```  
+
+```
+./build.sh
+```  
+
 ## Credits
 AltServer-Linux and alt-anisette-server made by [NyaMisty](https://github.com/NyaMisty)  
-Original script made by [powenn](https://github.com/powenn)
+AltServer-LinuxGUI made by [powenn](https://github.com/powenn)
