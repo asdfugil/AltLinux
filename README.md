@@ -33,7 +33,7 @@ sudo usermod -aG docker $USER
 newgrp docker
 ```
 
-Reboot your computer for changes to apply.
+Reboot your computer for changes to take effect.
 
 Now you can download and install [the DEB package](https://github.com/maxasix/AltLinux/releases).
   
@@ -50,6 +50,8 @@ cd AltLinux
 ```
 ./build.sh
 ```  
+
+It takes a long time to get started for the first time. Patience is key.
 
 ## Credits
 AltServer-Linux and alt-anisette-server made by [NyaMisty](https://github.com/NyaMisty)  
