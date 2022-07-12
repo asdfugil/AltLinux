@@ -3,7 +3,7 @@
 This is a GUI for AltServer-Linux. Currently it is designed to work with Ubuntu 22.04 x64.
 
 Features:
-- A straightforward GUIss
+- A straightforward GUI
 - A tray menu that works just like on Windows
 - Sideloading AltStore
 - Sideloading other apps without AltStore
@@ -14,9 +14,9 @@ The program is in its very early state, so any feedback or contributions are wel
 
 ## Install AltLinux
 
-Download and install the DEB package [from here](https://github.com/maxasix/AltLinux/releases).
+Download and install the DEB package [from here](https://github.com/maxasix/AltLinux/releases). 
 
-TIP: It takes a long time to get started for the first time. Patience is key.
+You can read the [Tips And Tricks](#tips-and-tricks) section for additional information.
 
 ## Run the script without installing
 Install the dependencies:
@@ -64,6 +64,18 @@ cd AltLinux
 ```  
 
 The DEB file is ready! You can install it now.
+
+## Tips And Tricks
+
+- Due to the fact that the `alt-anisette-server` Docker package is quite heavy in its size, it takes a long time to get started for the first time. Patience is key.
+
+- AltLinux runs the `alt-anisette-server` Docker package as root by default. This causes a password prompt to appear every time AltLinux is launched on startup. This can be mitigated by adding the user to the `docker` group:
+```
+sudo groupadd docker
+```
+```
+sudo usermod -aG docker $USER
+```
 
 ## Credits
 AltServer-Linux and alt-anisette-server made by [NyaMisty](https://github.com/NyaMisty)  
