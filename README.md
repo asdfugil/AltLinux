@@ -69,7 +69,7 @@ The DEB file is ready! You can install it now.
 
 - Due to the fact that the `alt-anisette-server` Docker package is quite heavy in its size, it takes a long time to get started for the first time. Patience is key.
 
-- AltLinux runs the `alt-anisette-server` Docker package as root by default. This causes a password prompt to appear every time AltLinux is launched on startup. This can be mitigated by adding the user to the `docker` group:
+- AltLinux runs the `alt-anisette-server` Docker package as root by default. This causes a password prompt to appear every time AltLinux is launched on startup. This can be avoided by adding the user to the `docker` group:
 ```
 sudo groupadd docker
 ```
