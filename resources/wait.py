@@ -10,7 +10,7 @@ class testing(gtk.Window):
    def __init__(self):
       super().__init__(title="AltLinux")
       self.present()
-      self.set_position(gtk.WindowPosition.CENTER)
+      self.set_position(gtk.WindowPosition.CENTER_ALWAYS)
       self.set_resizable( False )
       self.set_size_request(200, 100)
       self.set_border_width(10)	

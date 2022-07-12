@@ -9,7 +9,7 @@ class testing(gtk.Window):
    def __init__(self):
       super().__init__(title="Error")
       self.present()
-      self.set_position(gtk.WindowPosition.CENTER)
+      self.set_position(gtk.WindowPosition.CENTER_ALWAYS)
       self.set_resizable( False )
       self.set_size_request(450, 100)
       self.set_border_width(10)	
