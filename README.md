@@ -76,6 +76,7 @@ sudo groupadd docker
 ```
 sudo usermod -aG docker $USER
 ```
+Reboot to apply the changes.
 
 ## Credits
 AltServer-Linux and alt-anisette-server made by [NyaMisty](https://github.com/NyaMisty)  
