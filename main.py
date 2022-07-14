@@ -74,7 +74,7 @@ def main():
       print('OK!')
   else :
     CheckRunA=subprocess.run('id -nG "$USER" | grep -qw docker',shell=True)
-    if CheckRunA.returncode == 0 :
+    if CheckRunA.returncode == 1 :
       CheckRun3=subprocess.run(f'pkexec sh -c "docker pull nyamisty/alt_anisette_server && docker run -d --rm -p 6969:6969 -it nyamisty/alt_anisette_server"',shell=True) 
     else :
       CheckRun3=subprocess.run(f'docker pull nyamisty/alt_anisette_server && docker run -d --rm -p 6969:6969 -it nyamisty/alt_anisette_server',shell=True) 
@@ -162,7 +162,7 @@ def on_abtdlg(self):
   pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(resource_path('resources/2.png'), width, height)
   about.set_logo(pixbuf)
   about.set_program_name("AltLinux")
-  about.set_version("0.3.8")
+  about.set_version("0.3.9")
   about.set_authors(['maxasix', 'AltServer-Linux and alt-anisette-server', 'made by NyaMisty on Github', 'AltServer-LinuxGUI', 'made by powenn on Github'])
   about.set_comments("A GUI for AltServer-Linux written in Python and PyGObject.")
   about.set_website("https://github.com/maxasix/AltLinux")
