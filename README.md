@@ -34,7 +34,7 @@ cd AltLinux
 ```  
 
 ```
-./build.sh
+python3 main.py
 ```  
 
 ## Compile the package
