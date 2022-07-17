@@ -1,6 +1,6 @@
 # AltLinux
 
-This is a GUI for AltServer-Linux. Currently it is designed to work with Ubuntu 22.04 x64.
+A GUI for AltServer-Linux. Currently, it is designed to work with Ubuntu. Derivatives, such as Linux Mint should also work.
 
 Features:
 - A straightforward GUI
@@ -19,10 +19,16 @@ Download and install the DEB package [from here](https://github.com/maxasix/AltL
 You can read the [Tips And Tricks](#tips-and-tricks) section for additional information.
 
 ## Run the script without installing
+Add the 'universe' repository:
+
+```
+sudo add-apt-repository universe -y
+```
+
 Install the dependencies:
 ```
-sudo apt-get install binutils python3-pip git gir1.2-appindicator3-0.1 usbmuxd libimobiledevice6 libimobiledevice-utils wget curl libavahi-compat-libdnssd-dev docker.io
-```  
+sudo apt-get install binutils python3-pip git gir1.2-appindicator3-0.1 usbmuxd libimobiledevice6 libimobiledevice-utils wget curl libavahi-compat-libdnssd-dev docker.io zlib1g-dev
+``` 
 
 Run the following commands:
 ```
@@ -38,9 +44,15 @@ python3 main.py
 ```  
 
 ## Compile the package
+Add the 'universe' repository:
+
+```
+sudo add-apt-repository universe -y
+```
+
 Install the dependencies:
 ```
-sudo apt-get install binutils python3-pip git gir1.2-appindicator3-0.1 usbmuxd libimobiledevice6 libimobiledevice-utils wget curl libavahi-compat-libdnssd-dev docker.io
+sudo apt-get install binutils python3-pip git gir1.2-appindicator3-0.1 usbmuxd libimobiledevice6 libimobiledevice-utils wget curl libavahi-compat-libdnssd-dev docker.io zlib1g-dev
 ```  
   
 Install pyinstaller:
@@ -70,6 +82,9 @@ The DEB file is ready! You can install it now.
 - Due to the fact that the `alt-anisette-server` Docker package is quite heavy in its size, it takes a long time to get started for the first time. Patience is key.
 
 - AltLinux runs the `alt-anisette-server` Docker package as root by default. This causes a password prompt to appear every time AltLinux is launched on startup. This can be avoided by adding the user to the `docker` group:
+
+- AltLinux cannot run with a VPN turned on. Turn off the VPN and restart AltLinux.
+
 ```
 sudo groupadd docker
 ```
@@ -79,5 +94,4 @@ sudo usermod -aG docker $USER
 Reboot to apply the changes.
 
 ## Credits
-AltServer-Linux and alt-anisette-server made by [NyaMisty](https://github.com/NyaMisty)  
-AltServer-LinuxGUI made by [powenn](https://github.com/powenn)
+AltServer-Linux and alt-anisette-server made by [NyaMisty](https://github.com/NyaMisty)

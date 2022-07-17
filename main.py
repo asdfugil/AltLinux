@@ -27,6 +27,7 @@ def resource_path(relative_path):
 ermcheck = False
 lolcheck = "lol"
 Warnmsg = "warn"
+icon_name = "view-conceal-symbolic.symbolic"
 command_six = gtk.CheckMenuItem('Launch at Login')
 AppIcon = resource_path("resources/2.png")
 AltServer = resource_path("resources/AltServer")
@@ -87,9 +88,9 @@ def main():
   GLib.set_prgname('AltLinux')
   if not os.path.exists(AltStore):
     if installedcheck :
-      subprocess.run(f'pkexec curl -L https://cdn.altstore.io/file/altstore/apps/altstore/1_5.ipa > /usr/lib/altlinux/resources/AltStore.ipa',shell=True)
+      subprocess.run(f'pkexec curl -L https://cdn.altstore.io/file/altstore/apps/altstore/1_5_1.ipa > /usr/lib/altlinux/resources/AltStore.ipa',shell=True)
     else :
-      subprocess.run(f'curl -L https://cdn.altstore.io/file/altstore/apps/altstore/1_5.ipa > ./resources/AltStore.ipa',shell=True)
+      subprocess.run(f'curl -L https://cdn.altstore.io/file/altstore/apps/altstore/1_5_1.ipa > ./resources/AltStore.ipa',shell=True)
   CheckRun8=subprocess.run(command1,shell=True)
   if CheckRun8.returncode == 0 :
     file_name = resource_path("resources/1.png")
@@ -162,10 +163,11 @@ def on_abtdlg(self):
   pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(resource_path('resources/2.png'), width, height)
   about.set_logo(pixbuf)
   about.set_program_name("AltLinux")
-  about.set_version("0.3.9")
-  about.set_authors(['maxasix', 'AltServer-Linux and alt-anisette-server', 'made by NyaMisty on Github', 'AltServer-LinuxGUI', 'made by powenn on Github'])
-  about.set_comments("A GUI for AltServer-Linux written in Python and PyGObject.")
+  about.set_version("0.4.0")
+  about.set_authors(['maxasix', 'AltServer-Linux and alt-anisette-server', 'made by NyaMisty on Github'])
+  about.set_comments("A GUI for AltServer-Linux written in Python.")
   about.set_website("https://github.com/maxasix/AltLinux")
+  about.set_website_label("Github")
   about.set_copyright("GUI by maxasix")
   about.set_position(gtk.WindowPosition.CENTER_ALWAYS)
   about.run()
@@ -224,6 +226,10 @@ class login(gtk.Window):
 
         self.entry = gtk.Entry()
         self.entry.set_visibility(False)
+        global icon_name
+        self.entry.set_icon_from_icon_name(gtk.EntryIconPosition.SECONDARY, icon_name)
+        #self.entry.set_icon_activatable(gtk.EntryIconPosition.SECONDARY, "view-reveal-symbolic.symbolic")
+        self.entry.connect("icon-press", self.on_icon_toggled)
 
         #self.check_editable = gtk.CheckButton(label="Editable")
         #self.check_editable.connect("toggled", self.on_editable_toggled)
@@ -257,6 +263,7 @@ class login(gtk.Window):
         grid.attach(self.entry1, 1, 0, 2, 1)
         grid.attach_next_to(label1, label, gtk.PositionType.BOTTOM, 1, 2)
         grid.attach(self.entry, 1, 2, 1, 1)
+        #grid.attach_next_to(self.icon, self.entry, gtk.PositionType.RIGHT, 1, 1)
         grid.attach_next_to(button, self.entry, gtk.PositionType.RIGHT, 1, 1)
           
    def on_click_me_clicked(self, button):
@@ -413,12 +420,16 @@ class login(gtk.Window):
    def do_pulse(self, user_data):
         self.entry.progress_pulse()
         return True
-   #def on_icon_toggled(self, button):
-   #    if button.get_active():
-   #         icon_name = "system-lock-screen-symbolic"
-   #    else:
-   #         icon_name = None
-   #    self.entry.set_icon_from_icon_name(gtk.EntryIconPosition.PRIMARY, icon_name)
+
+   def on_icon_toggled(self, widget, icon, event):
+       global icon_name
+       if icon_name == "view-conceal-symbolic.symbolic":
+            icon_name = "view-reveal-symbolic.symbolic"
+            self.entry.set_visibility(True)
+       elif icon_name == "view-reveal-symbolic.symbolic":
+            icon_name = "view-conceal-symbolic.symbolic"
+            self.entry.set_visibility(False)
+       self.entry.set_icon_from_icon_name(gtk.EntryIconPosition.SECONDARY, icon_name)
 
 class testing(gtk.Window):
     def __init__(self):
