@@ -19,7 +19,7 @@ Download and install the DEB package [from here](https://github.com/maxasix/AltL
 You can read the [Tips And Tricks](#tips-and-tricks) section for additional information.
 
 ## Run the script without installing
-Add the 'universe' repository:
+Add the `universe` repository:
 
 ```
 sudo add-apt-repository universe -y
@@ -44,7 +44,7 @@ python3 main.py
 ```  
 
 ## Compile the package
-Add the 'universe' repository:
+Add the `universe` repository:
 
 ```
 sudo add-apt-repository universe -y
