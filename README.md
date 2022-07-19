@@ -10,7 +10,7 @@ Features:
 - While the tray icon is present, AltServer runs in the background in tethered mode
 - Launching the tray icon on start-up
 
-The program is in its very early state, so any feedback or contributions are welcome.
+The program is in its very early state, so if you're experiencing issues or want to help, you can join [the Discord server](https://discord.gg/vtvxYFAfAR).
 
 ## Install AltLinux
 
