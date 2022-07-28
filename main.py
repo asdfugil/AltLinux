@@ -441,7 +441,7 @@ class login(Gtk.Window):
               print('Success!')
               self.success()
               self.destroy() 
-          #self.realthread1.join()
+          #self.realthread1.join() 
    def onclickmethread(self):
         AppleID = self.entry1.get_text().lower()
         Password = self.entry.get_text()
