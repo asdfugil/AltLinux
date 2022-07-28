@@ -3,7 +3,7 @@
 cd "$(dirname "$0")" || exit
 
 ALTSERVER_VERSION="v0.0.4"
-ALTSTORE_VERSION="1_5"
+ALTSTORE_VERSION="1_5_1"
 
 if [ ! -f "./resources/AltServer" ]; then
     curl -L "https://github.com/NyaMisty/AltServer-Linux/releases/download/$ALTSERVER_VERSION/AltServer-x86_64" > "./resources/AltServer"
@@ -18,12 +18,12 @@ if [ -d "./dist" ]; then
     rm -rf "./dist"
 fi
 
-chmod -R 0775 AltLinux
-pyinstaller -w -n altlinux main.py --clean
+pyinstaller altlinux.spec --clean
 cp -R ./resources ./dist/altlinux
 if [ ! -d "./AltLinux/usr/lib" ]; then
     mkdir "./AltLinux/usr/lib"
 fi
 
 cp -R ./dist/altlinux ./AltLinux/usr/lib
+chmod -R 0775 AltLinux
 dpkg-deb --build --root-owner-group AltLinux AltLinux.deb
