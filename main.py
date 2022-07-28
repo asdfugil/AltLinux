@@ -380,19 +380,6 @@ class login(Gtk.Window):
         self.realthread1 = threading.Thread(target=self.onclickmethread)
         self.realthread1.start()
         #self.realthread1.join()
-   def onclickmethread(self):
-        AppleID = self.entry1.get_text().lower()
-        Password = self.entry.get_text()
-        #print(AppleID)
-        #print(Password)
-        _udid = subprocess.check_output("lsusb -v 2> /dev/null | grep -e 'Apple Inc' -A 2 | grep iSerial | awk '{print $3}'",shell=True).decode().strip()
-        _udid_length = len(_udid)
-        if _udid_length == 24 :
-          UDID = _udid[:8] + '-' + _udid[8:]
-        elif _udid_length == 40 :
-          UDID = _udid
-        InsAltStoreCMD=f'''{("export ALTSERVER_ANISETTE_SERVER='http://127.0.0.1:6969' && /home/$(whoami)/.altlinux/AltServer")} -u {UDID} -a {AppleID} -p {Password} {PATH} > {("/home/$(whoami)/.altlinux/log.txt")}'''
-        InsAltStore=subprocess.Popen(InsAltStoreCMD, stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         Installing = True
         WarnTime=0
         while Installing :  
@@ -402,7 +389,7 @@ class login(Gtk.Window):
           Check2fa=subprocess.run(f'grep "Enter two factor code" {("/home/$(whoami)/.altlinux/log.txt")}',shell=True)
           if CheckIns.returncode == 0 and WarnTime == 1:
               Installing = False
-              InsAltStore.terminate()
+              self.InsAltStore.terminate()
               print('Fail!')
               self.fail()
               self.destroy()  
@@ -414,7 +401,7 @@ class login(Gtk.Window):
                     response = dialog.run()
                     if response == Gtk.ResponseType.OK:
                       dialog.destroy()
-                      InsAltStore.communicate(input=b'\n')
+                      self.InsAltStore.communicate(input=b'\n')
                       WarnTime = 1
                       Installing = True
                     elif response == Gtk.ResponseType.CANCEL:
@@ -442,7 +429,7 @@ class login(Gtk.Window):
                 print("of course")
                 Installing = True
                 print("mhm?")
-                InsAltStore.communicate(input=vercodebytes)
+                self.InsAltStore.communicate(input=vercodebytes)
                 print("you dont say?")
                 dialog.destroy()
               elif response == Gtk.ResponseType.CANCEL:
@@ -454,10 +441,21 @@ class login(Gtk.Window):
               print('Success!')
               self.success()
               self.destroy() 
-        #self.realthread0.join()
-        #self.realthread1.join()
-        self.emit("my-custom-signal1", None)
-        return 0
+          #self.realthread1.join()
+   def onclickmethread(self):
+        AppleID = self.entry1.get_text().lower()
+        Password = self.entry.get_text()
+        #print(AppleID)
+        #print(Password)
+        _udid = subprocess.check_output("lsusb -v 2> /dev/null | grep -e 'Apple Inc' -A 2 | grep iSerial | awk '{print $3}'",shell=True).decode().strip()
+        _udid_length = len(_udid)
+        if _udid_length == 24 :
+          UDID = _udid[:8] + '-' + _udid[8:]
+        elif _udid_length == 40 :
+          UDID = _udid
+        self.InsAltStoreCMD=f'''{("export ALTSERVER_ANISETTE_SERVER='http://127.0.0.1:6969' && /home/$(whoami)/.altlinux/AltServer")} -u {UDID} -a {AppleID} -p {Password} {PATH} > {("/home/$(whoami)/.altlinux/log.txt")}'''
+        self.InsAltStore=subprocess.Popen(self.InsAltStoreCMD, stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+
    def success(self):
       self.set_position(Gtk.WindowPosition.CENTER_ALWAYS)
       dialog = Gtk.MessageDialog(
