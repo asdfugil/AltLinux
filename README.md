@@ -154,4 +154,5 @@ Reboot to apply the changes.
 
 ## Credits
 AltServer-Linux and alt-anisette-server made by [NyaMisty](https://github.com/NyaMisty)
+
 Artwork by [Nebula](https://github.com/itsnebulalol)
