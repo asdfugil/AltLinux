@@ -38,7 +38,7 @@ sudo rm -rf /usr/lib/altlinux
 ```
 
 ```
-rm -rf /home/$(whoami)/.altlinux
+rm -rf $HOME/.local/share/altlinux
 ```
 
 ## Run the script without installing
@@ -118,3 +118,4 @@ Reboot to apply the changes.
 
 ## Credits
 AltServer-Linux and alt-anisette-server made by [NyaMisty](https://github.com/NyaMisty)
+Artwork by [Nebula](https://github.com/itsnebulalol)
