@@ -1,13 +1,9 @@
 # AltLinux
 <img src="https://github.com/maxasix/AltLinuxblob/main/resources/4.png" alt="AltLinux Logo"> 
 
-A GUI for AltServer-Linux. It's available for the following distributions:
+A GUI for AltServer-Linux. It's available for Ubuntu 18.04, Ubuntu 20.04, and Ubuntu 22.04.
 
-- Ubuntu 18.04 LTS
-- Ubuntu 20.04 LTS
-- Ubuntu 22.04 LTS
-
-Derivatives, such as Linux Mint and Pop!_ OS should also work. If your distribution isn't listed here, you can [run the script without installing](#run-the-script-without-installing).
+Derivatives, such as Linux Mint and Pop!_ OS should also work. If your distribution isn't listed here, you can [run the script without installing](#run-the-script-without-installing). It contains experimental Fedora instructions which may or may not work.
 
 Features:
 - A straightforward GUI
@@ -42,6 +38,9 @@ rm -rf $HOME/.local/share/altlinux
 ```
 
 ## Run the script without installing
+
+### Ubuntu:
+
 Add the `universe` repository:
 
 ```
@@ -52,6 +51,34 @@ Install the dependencies:
 ```
 sudo apt-get install binutils python3-pip git gir1.2-appindicator3-0.1 usbmuxd libimobiledevice6 libimobiledevice-utils wget curl libavahi-compat-libdnssd-dev docker.io zlib1g-dev
 ``` 
+
+Run the following commands:
+```
+git clone https://github.com/maxasix/AltLinux
+```  
+
+```
+cd AltLinux
+```  
+
+```
+python3 main.py
+```  
+
+### Fedora:
+
+Install the dependencies:
+```
+sudo dnf install binutils python3-pip git libappindicator-gtk3 usbmuxd libimobiledevice-devel libimobiledevice-utils wget curl avahi-compat-libdns_sd-devel dnf-plugins-core
+```
+Add the Docker repo to your Fedora system:
+```
+sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+```
+Run the following command to install Docker:
+```
+sudo dnf install docker-ce docker-ce-cli containerd.io
+```
 
 Run the following commands:
 ```
@@ -79,8 +106,17 @@ sudo apt-get install binutils python3-pip git gir1.2-appindicator3-0.1 usbmuxd l
 ```  
   
 Install pyinstaller:
+
+- Ubuntu 20.04 and later:
+
 ```  
 pip install pyinstaller
+```  
+
+- Ubuntu 18.04 and earlier:
+
+```  
+pip3 install pyinstaller
 ```  
 
 Reboot your computer for changes to take effect.
