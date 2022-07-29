@@ -1,5 +1,5 @@
 # AltLinux
-<img src="https://github.com/maxasix/AltLinuxblob/main/resources/4.png" alt="AltLinux Logo"> 
+<img src="https://github.com/maxasix/AltLinux/blob/main/resources/4.png" alt="AltLinux Logo"> 
 
 A GUI for AltServer-Linux. It's available for Ubuntu 18.04, Ubuntu 20.04, and Ubuntu 22.04.
 
