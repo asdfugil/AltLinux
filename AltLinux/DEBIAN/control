@@ -7,3 +7,4 @@ Maintainer: maxasix <maxasix@disroot.org>
 Description: GUI for AltServerLinux
 Homepage: https://github.com/maxasix/AltLinux
 Depends: binutils, python3, gir1.2-appindicator3-0.1, usbmuxd, libimobiledevice6, libimobiledevice-utils, wget, curl, libavahi-compat-libdnssd-dev, unzip
+
