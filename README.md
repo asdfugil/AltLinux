@@ -139,6 +139,4 @@ AltServer-Linux and alt-anisette-server made by [NyaMisty](https://github.com/Ny
 
 Artwork by [Nebula](https://github.com/itsnebulalol)
 
-Netmuxd by [jkcoxson](https://github.com/jkcoxson)
-
 Provision by [Dadoum](https://github.com/Dadoum)
