@@ -135,7 +135,7 @@ cd AltLinux
 The DEB file is ready! You can install it now.
 
 ## Credits
-AltServer-Linux and alt-anisette-server made by [NyaMisty](https://github.com/NyaMisty)
+AltServer-Linux made by [NyaMisty](https://github.com/NyaMisty)
 
 Artwork by [Nebula](https://github.com/itsnebulalol)
 
