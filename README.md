@@ -1,9 +1,7 @@
 # AltLinux
 <img src="https://github.com/maxasix/AltLinux/blob/main/resources/4.png" alt="AltLinux Logo"> 
 
-A GUI for AltServer-Linux. It's available for Ubuntu 18.04, Ubuntu 20.04, and Ubuntu 22.04.
-
-Derivatives, such as Linux Mint and Pop!_ OS should also work. If your distribution isn't listed here, you can [run the script without installing](#run-the-script-without-installing). It contains experimental Fedora instructions which may or may not work.
+AltLinux is a GUI for AltServer-Linux that allows to easily sideload apps onto an iPhone, an iPad, or an iPod Touch. It supports iOS 12.2 and later.
 
 Features:
 - A straightforward GUI
@@ -17,9 +15,25 @@ The program is in its very early state, so if you're experiencing issues or want
 
 ## Install AltLinux
 
+AltLinux is available for Ubuntu 22.04, Ubuntu 20.04, and Ubuntu 18.04. Only x86_64 architecture is supported at the moment.
+
+Derivatives, such as Linux Mint and Pop!_ OS should also work. To make sure which DEB package to pick, run the following command:
+
+```
+python3 --version
+```
+
+| Python 3.10          | Python 3.8        | Python 3.6            |
+|:--------------------:|:-----------------:|:---------------------:|
+| Ubuntu 22.04         | Ubuntu 20.04      | Ubuntu 18.04          |
+| Pop!_OS 22.04        | Pop!_OS 20.04     | Pop!_OS 18.04         |
+| Linux Mint 21        | Linux Mint 20     | Linux Mint 19         |
+| elementary OS 7      | elementary OS 6   | elementary OS 5       |
+| Zorin OS 17          | Zorin OS 16       | Zorin OS 15           |
+
 Download and install the DEB package [from here](https://github.com/maxasix/AltLinux/releases). 
 
-Read the [Tips And Tricks](#tips-and-tricks) section for more information.
+If your distribution isn't based on Ubuntu, you can [run the script without installing](#run-the-script-without-installing). It contains experimental Fedora instructions which may or may not work.
 
 ## Uninstall AltLinux
 
@@ -49,7 +63,7 @@ sudo add-apt-repository universe -y
 
 Install the dependencies:
 ```
-sudo apt-get install binutils python3-pip git gir1.2-appindicator3-0.1 usbmuxd libimobiledevice6 libimobiledevice-utils wget curl libavahi-compat-libdnssd-dev docker.io zlib1g-dev
+sudo apt-get install binutils python3-pip git gir1.2-appindicator3-0.1 usbmuxd libimobiledevice6 libimobiledevice-utils wget curl libavahi-compat-libdnssd-dev zlib1g-dev unzip
 ``` 
 
 Run the following commands:
@@ -69,15 +83,7 @@ python3 main.py
 
 Install the dependencies:
 ```
-sudo dnf install binutils python3-pip git libappindicator-gtk3 usbmuxd libimobiledevice-devel libimobiledevice-utils wget curl avahi-compat-libdns_sd-devel dnf-plugins-core
-```
-Add the Docker repo to your Fedora system:
-```
-sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
-```
-Run the following command to install Docker:
-```
-sudo dnf install docker-ce docker-ce-cli containerd.io
+sudo dnf install binutils python3-pip git libappindicator-gtk3 usbmuxd libimobiledevice-devel libimobiledevice-utils wget curl avahi-compat-libdns_sd-devel dnf-plugins-core unzip
 ```
 
 Run the following commands:
@@ -102,18 +108,10 @@ sudo add-apt-repository universe -y
 
 Install the dependencies:
 ```
-sudo apt-get install binutils python3-pip git gir1.2-appindicator3-0.1 usbmuxd libimobiledevice6 libimobiledevice-utils wget curl libavahi-compat-libdnssd-dev docker.io zlib1g-dev
+sudo apt-get install binutils python3-pip git gir1.2-appindicator3-0.1 usbmuxd libimobiledevice6 libimobiledevice-utils wget curl libavahi-compat-libdnssd-dev zlib1g-dev, unzip
 ```  
   
 Install pyinstaller:
-
-- Ubuntu 20.04 and later:
-
-```  
-pip install pyinstaller
-```  
-
-- Ubuntu 18.04 and earlier:
 
 ```  
 pip3 install pyinstaller
@@ -121,7 +119,7 @@ pip3 install pyinstaller
 
 Reboot your computer for changes to take effect.
 
-Proceed by running the following commands:
+After that, proceed by running the following commands:
 ```
 git clone https://github.com/maxasix/AltLinux
 ```  
@@ -136,23 +134,11 @@ cd AltLinux
 
 The DEB file is ready! You can install it now.
 
-## Tips And Tricks
-
-- AltLinux runs the `alt-anisette-server` Docker package as root by default. This causes a password prompt to appear every time AltLinux is launched on startup. This can be avoided by adding the user to the `docker` group:
-
-```
-sudo groupadd docker
-```
-```
-sudo usermod -aG docker $USER
-```
-Reboot to apply the changes.
-
-- The first startup usually takes from 2 minutes to 2 hours depending on your Internet connection. This is mostly because the `alt-anisette-server` Docker package weighs 2.19 GB. Patience is key.
-
-- AltLinux cannot run with a VPN turned on. Turn off the VPN and restart AltLinux.
-
 ## Credits
 AltServer-Linux and alt-anisette-server made by [NyaMisty](https://github.com/NyaMisty)
 
 Artwork by [Nebula](https://github.com/itsnebulalol)
+
+Netmuxd by [jkcoxson](https://github.com/jkcoxson)
+
+Provision by [Dadoum](https://github.com/Dadoum)

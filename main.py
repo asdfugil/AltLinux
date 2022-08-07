@@ -1,8 +1,10 @@
 #!/usr/bin/python
 import os
+import errno
 from re import T
 import gi
-import requests
+import urllib.request
+from urllib.request import urlopen
 import subprocess
 import signal
 import threading
@@ -32,14 +34,18 @@ def resource_path(relative_path):
 ermcheck = False
 splcheck = False
 InsAltStore = subprocess.Popen("test", stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
-lolcheck = "lol"
+lolcheck = "lol" # Redirects the user either to the login window, or to the file chooser dialog. If the "Pair" option was selected, it closes the dialog.
+AppleID = "lol"
+Password = "lol"
 Warnmsg = "warn"
+savedcheck = False
 Failmsg = "fail"
 nprogress = 0.5
 file_name = resource_path("resources/1.png")
 icon_name = "view-conceal-symbolic.symbolic"
-command_six = Gtk.CheckMenuItem('Launch at Login')
+command_six = Gtk.CheckMenuItem(label='Launch at Login')
 AppIcon = resource_path("resources/2.png")
+anisette_server = "$HOME/.local/share/altlinux/anisette_server"
 AltServer = "$HOME/.local/share/altlinux/AltServer"
 AltStore = "$HOME/.local/share/altlinux/AltStore.ipa"
 PATH = AltStore
@@ -49,15 +55,14 @@ altlinuxpath = os.path.join(os.environ.get('XDG_DATA_HOME') or f'{ os.environ["H
 def connectioncheck():
     timeout = 5
     try:
-        requests.get("https://github.com", timeout=timeout)
+        urlopen('http://www.example.com', timeout=timeout)
         return True
-    except (requests.ConnectionError, requests.Timeout):
+    except:
 	    return False
 
 # check version
 with open(resource_path("resources/version"), 'r', encoding='utf-8') as f:
     LocalVersion = f.readline().strip()
-LatestVersion=""
 
 def main():
   GLib.set_prgname('AltLinux')
@@ -74,7 +79,6 @@ def main():
     file_name = resource_path("resources/2.png")
   CheckRun7=subprocess.run(command1,shell=True)
   if CheckRun7.returncode == 1 or (CheckRun7.returncode == 0 and Gtk.StatusIcon.is_embedded) :
-    print("True!")
     if connectioncheck() :
       global indicator
       indicator = appindicator.Indicator.new("customtray", os.path.abspath(file_name), appindicator.IndicatorCategory.APPLICATION_STATUS)
@@ -93,31 +97,35 @@ def menu():
   menu = Gtk.Menu()
   
   if(notify()) == True:
-    command_upd = Gtk.MenuItem('Download Update')
+    command_upd = Gtk.MenuItem(label='Download Update')
     command_upd.connect('activate', showurl)
     menu.append(command_upd)
     
     menu.append(Gtk.SeparatorMenuItem())
 
-  command_one = Gtk.MenuItem('About AltLinux')
+  command_one = Gtk.MenuItem(label='About AltLinux')
   command_one.connect('activate', on_abtdlg)
   menu.append(command_one)
   
   menu.append(Gtk.SeparatorMenuItem())
 
-  command_two = Gtk.MenuItem('Install AltStore')
+  command_two = Gtk.MenuItem(label='Install AltStore')
   command_two.connect('activate', altstoreinstall)
   menu.append(command_two)
   
-  command_three = Gtk.MenuItem('Install an IPA file')
+  command_three = Gtk.MenuItem(label='Install an IPA file')
   command_three.connect('activate', altserverfile)
   menu.append(command_three)
 
-  command_four = Gtk.MenuItem('Pair')
+  #command_three_half = Gtk.MenuItem(label='Start netmuxd')
+  #command_three_half.connect('activate', altserverfile)
+  #menu.append(command_three_half)
+
+  command_four = Gtk.MenuItem(label='Pair')
   command_four.connect('activate', lol)
   menu.append(command_four)
 
-  command_five = Gtk.MenuItem('Restart AltServer')
+  command_five = Gtk.MenuItem(label='Restart AltServer')
   command_five.connect('activate', lol123)
   menu.append(command_five)
   
@@ -132,7 +140,7 @@ def menu():
     command_six.connect('activate', launchatlogin1)
     menu.append(command_six)
   
-  exittray = Gtk.MenuItem('Quit AltLinux')
+  exittray = Gtk.MenuItem(label='Quit AltLinux')
   exittray.connect('activate', quit)
   menu.append(exittray)
   
@@ -150,8 +158,8 @@ def on_abtdlg(self):
   pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(resource_path('resources/3.png'), width, height)
   about.set_logo(pixbuf)
   about.set_program_name("AltLinux")
-  about.set_version("0.4.1")
-  about.set_authors(['maxasix', 'AltServer-Linux and alt-anisette-server', 'made by NyaMisty on Github'])
+  about.set_version("0.4.2")
+  about.set_authors(['maxasix', 'AltServer-Linux', 'made by NyaMisty', 'Provision made by', 'Dadoum'])
   about.set_artists(['nebula'])
   about.set_comments("A GUI for AltServer-Linux written in Python.")
   about.set_website("https://github.com/maxasix/AltLinux")
@@ -231,7 +239,7 @@ class SplashScreen(Handy.Window):
         image.show()
         self.mainBox.pack_start(image, False, True, 0)
         
-        self.lbl1 = Gtk.Label("Starting AltLinux...")
+        self.lbl1 = Gtk.Label(label="Starting AltLinux...")
         #lbl1.set_property("margin_left", 40)
         #lbl1.set_property("margin_right", 40)
         self.mainBox.pack_start(self.lbl1, False, False, 6)
@@ -250,7 +258,6 @@ class SplashScreen(Handy.Window):
           if not self.t.is_alive():
               global indicator
               indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
-              print("lol")
               self.t.join()
               self.destroy()
           else:
@@ -260,24 +267,31 @@ class SplashScreen(Handy.Window):
       global installedcheck
       command1 = 'echo $XDG_CURRENT_DESKTOP | grep -q "GNOME"'
       #here comes the splash screen
-      self.lbl1.set_text("Checking if alt-anisette-server is already running...")
+      self.lbl1.set_text("Checking if anisette_server is already running...")
       self.loadaltlinux.set_fraction(0.1)
-      subprocess.run("rm $HOME/.local/share/altlinux/anisettelog.txt",shell=True)
-      command = 'curl 127.0.0.1:6969 > "$HOME/.local/share/altlinux/anisettelog.txt"; grep -q "{" "$HOME/.local/share/altlinux/anisettelog.txt"'
+      command = 'curl 127.0.0.1:6969 | grep -q "{"'
       CheckRun=subprocess.run(command,shell=True)
       if CheckRun.returncode == 0 :
-              print('OK!')
-              self.loadaltlinux.set_fraction(0.3)
+              self.loadaltlinux.set_fraction(0.8)
       else :
-              self.lbl1.set_text("Downloading alt-anisette-server... This may take a while")
-              self.loadaltlinux.set_fraction(0.3)
-              CheckRunA=subprocess.run('id -nG "$USER" | grep -qw docker',shell=True)
-              if CheckRunA.returncode == 1 :
-                CheckRun3=subprocess.run(f'pkexec sh -c "docker pull nyamisty/alt_anisette_server && docker run -d --rm -p 6969:6969 -it nyamisty/alt_anisette_server"',shell=True)
-              else :
-                CheckRun3=subprocess.run(f'docker pull nyamisty/alt_anisette_server && docker run -d --rm -p 6969:6969 -it nyamisty/alt_anisette_server',shell=True) 
-      self.lbl1.set_text("Starting alt-anisette-server...")
-      self.loadaltlinux.set_fraction(0.5)
+              if not os.path.isfile(f'{(altlinuxpath)}/anisette_server'):
+                self.lbl1.set_text("Downloading anisette_server...")
+                subprocess.run(f'curl -L https://github.com/Dadoum/Provision/releases/download/1.0.0/anisette_server-x86_64 > {(altlinuxpath)}/anisette_server',shell=True)
+                subprocess.run(f'chmod +x {(altlinuxpath)}/anisette_server',shell=True)
+                subprocess.run(f'chmod 755 {(altlinuxpath)}/anisette_server',shell=True)
+                self.loadaltlinux.set_fraction(0.2)
+                self.lbl1.set_text("Downloading Apple Music APK...")
+                CheckRunA=subprocess.run(f'curl https://apps.mzstatic.com/content/android-apple-music-apk/applemusic.apk --output {(altlinuxpath)}/am.apk',shell=True)
+                os.makedirs(f'{(altlinuxpath)}/lib/x86_64')
+                self.loadaltlinux.set_fraction(0.4)
+                self.lbl1.set_text("Extracting necessary libraries...")
+                CheckRunB=subprocess.run(f'unzip -j "{(altlinuxpath)}/am.apk" "lib/x86_64/libstoreservicescore.so" -d "{(altlinuxpath)}/lib/x86_64"', shell=True)
+                CheckRunC=subprocess.run(f'unzip -j "{(altlinuxpath)}/am.apk" "lib/x86_64/libCoreADI.so" -d "{(altlinuxpath)}/lib/x86_64"', shell=True)
+                silentremove(f'{(altlinuxpath)}/am.apk')
+                self.loadaltlinux.set_fraction(0.6)
+      self.lbl1.set_text("Starting anisette_server...")
+      subprocess.run(f'cd {(altlinuxpath)} && ./anisette_server &> /dev/null &',shell=True)
+      self.loadaltlinux.set_fraction(0.8)
       finished = False
       global nprogress
       while not finished:
@@ -285,32 +299,31 @@ class SplashScreen(Handy.Window):
               if CheckRun5.returncode == 0 :
                 finished = True
               else :
-                CheckGrep=subprocess.run(f'grep "Connection refused" "$HOME/.local/share/altlinux/anisettelog.txt"',shell=True)
-                if CheckGrep.returncode == 0 :
-                  Gtk.main_quit()
-                  os.kill(os.getpid(),signal.SIGKILL)
-                else :
-                  sleep(3)
-              nprogress = nprogress+0.01
+                  sleep(1)
+              nprogress = nprogress+0.1
               self.loadaltlinux.set_fraction(nprogress)
-      CheckCheckRun1 = subprocess.run(f'test -e $HOME/.local/share/altlinux/AltServer',shell=True)
-      if not CheckCheckRun1.returncode == 0:
+      if not os.path.isfile(f'{(altlinuxpath)}/AltServer'):
               self.lbl1.set_text("Downloading AltServer...")
-              self.loadaltlinux.set_fraction(nprogress+0.05)
-              subprocess.run(f'curl -L https://github.com/NyaMisty/AltServer-Linux/releases/download/v0.0.5/AltServer-x86_64 > $HOME/.local/share/altlinux/AltServer',shell=True)
-              subprocess.run(f'chmod +x $HOME/.local/share/altlinux/AltServer',shell=True)
-      CheckCheckRun2 = subprocess.run(f'test -e $HOME/.local/share/altlinux/AltStore.ipa',shell=True)
-      if not CheckCheckRun2.returncode == 0:
+              self.loadaltlinux.set_fraction(nprogress+0.1)
+              subprocess.run(f'curl -L https://github.com/NyaMisty/AltServer-Linux/releases/download/v0.0.5/AltServer-x86_64 > {(altlinuxpath)}/AltServer',shell=True)
+              subprocess.run(f'chmod +x {(altlinuxpath)}/AltServer',shell=True)
+              subprocess.run(f'chmod 755 {(altlinuxpath)}/AltServer',shell=True)
+      if not os.path.isfile(f'{(altlinuxpath)}/AltStore.ipa'):
               self.lbl1.set_text("Downloading AltStore...")
-              self.loadaltlinux.set_fraction(nprogress+0.05)
-              subprocess.run(f'curl -L https://cdn.altstore.io/file/altstore/apps/altstore/1_5_1.ipa > $HOME/.local/share/altlinux/AltStore.ipa',shell=True)
+              self.loadaltlinux.set_fraction(nprogress+0.1)
+              subprocess.run(f'curl -L https://cdn.altstore.io/file/altstore/apps/altstore/1_5_1.ipa > {(altlinuxpath)}/AltStore.ipa',shell=True)
+              subprocess.run(f'chmod 755 {(altlinuxpath)}/AltStore.ipa',shell=True)
+      #if not os.path.isfile(f'{(altlinuxpath)}/netmuxd'):
+      #        self.lbl1.set_text("Downloading netmuxd...")
+      #        self.loadaltlinux.set_fraction(nprogress+0.1)
+      #        subprocess.run(f'curl -L https://github.com/jkcoxson/netmuxd/releases/download/v0.1.2/netmuxd-x86_64 > {(altlinuxpath)}/netmuxd',shell=True)
+      #        subprocess.run(f'chmod +x {(altlinuxpath)}/netmuxd',shell=True)
+      #        subprocess.run(f'chmod 755 {(altlinuxpath)}/netmuxd',shell=True)
       self.lbl1.set_text("Starting AltServer...")
       self.loadaltlinux.set_fraction(1.0)
-      subprocess.run(f'export ALTSERVER_ANISETTE_SERVER="http://127.0.0.1:6969" & $HOME/.local/share/altlinux/AltServer &> /dev/null &',shell=True)
+      subprocess.run(f'export ALTSERVER_ANISETTE_SERVER="http://127.0.0.1:6969" & {(altlinuxpath)}/AltServer &> /dev/null &',shell=True)
       global splcheck
       splcheck = True
-      subprocess.run("rm $HOME/.local/share/altlinux/anisettelog.txt",shell=True)
-      #self.emit("my-custom-signal", None)
       return 0
 
 class login(Gtk.Window):
@@ -342,26 +355,6 @@ class login(Gtk.Window):
         #self.entry.set_icon_activatable(Gtk.EntryIconPosition.SECONDARY, "view-reveal-symbolic.symbolic")
         self.entry.connect("icon-press", self.on_icon_toggled)
 
-        #self.check_editable = Gtk.CheckButton(label="Editable")
-        #self.check_editable.connect("toggled", self.on_editable_toggled)
-        #self.check_editable.set_active(True)
-        #hbox.pack_start(self.check_editable, True, True, 0)
-
-        #self.check_visible = Gtk.CheckButton(label="Visible")
-        #self.check_visible.connect("toggled", self.on_visible_toggled)
-        #self.check_visible.set_active(True)
-        #hbox.pack_start(self.check_visible, True, True, 0)
-
-        #self.pulse = Gtk.CheckButton(label="Pulse")
-        #self.pulse.connect("toggled", self.on_pulse_toggled)
-        #self.pulse.set_active(False)
-        #hbox.pack_start(self.pulse, True, True, 0)
-
-        #self.icon = Gtk.CheckButton(label="Icon")
-        #self.icon.connect("toggled", self.on_icon_toggled)
-        #self.icon.set_active(False)
-        #hbox.pack_start(self.icon, True, True, 0)
-
         self.button = Gtk.Button.new_with_label("Login")
         self.button.connect("clicked", self.on_click_me_clicked)
         
@@ -371,8 +364,39 @@ class login(Gtk.Window):
         grid.attach(self.entry, 1, 2, 1, 1)
         #grid.attach_next_to(self.icon, self.entry, Gtk.PositionType.RIGHT, 1, 1)
         grid.attach_next_to(self.button, self.entry, Gtk.PositionType.RIGHT, 1, 1)
-          
+
+   def on_click_me_clicked1(self):
+        #GObject.signal_new("my-custom-signal1", self, GObject.SignalFlags.RUN_LAST, GObject.TYPE_PYOBJECT,
+        #               (GObject.TYPE_PYOBJECT,))
+        #self.connect("my-custom-signal1", self.onclickmethread)
+        self.realthread1 = threading.Thread(target=self.onclickmethread)
+        self.realthread1.start()
+        #self.realthread1.join()
+        GLib.idle_add(self.ermlol)
+
    def on_click_me_clicked(self, button):
+        if not os.path.isfile(f'{(altlinuxpath)}/saved.txt'):
+          self.set_position(Gtk.WindowPosition.CENTER_ALWAYS)
+          dialog = Gtk.MessageDialog(
+                transient_for=self,
+                flags=0,
+                message_type=Gtk.MessageType.QUESTION,
+                buttons=Gtk.ButtonsType.YES_NO,
+                text="Do you want to save your login and password?",
+          )
+          dialog.format_secondary_text(
+                "This will allow you to login automatically."
+          )
+          response = dialog.run()
+          if response == Gtk.ResponseType.YES:
+            AppleID = self.entry1.get_text().lower()
+            Password = self.entry.get_text()
+            f = open(f'{(altlinuxpath)}/saved.txt', "x")
+            f.write(AppleID)   
+            f.write(':')
+            f.write(Password)
+            f.close()     
+          dialog.destroy()
         self.entry.set_progress_pulse_step(0.2)
         # Call self.do_pulse every 100 ms
         self.timeout_id = GLib.timeout_add(100, self.do_pulse, None)
@@ -388,41 +412,63 @@ class login(Gtk.Window):
         GLib.idle_add(self.ermlol)
 
    def onclickmethread(self):
-        AppleID = self.entry1.get_text().lower()
-        Password = self.entry.get_text()
-        #print(AppleID)
-        #print(Password)
-        _udid = subprocess.check_output("lsusb -v 2> /dev/null | grep -e 'Apple Inc' -A 2 | grep iSerial | awk '{print $3}'",shell=True).decode().strip()
-        _udid_length = len(_udid)
-        if _udid_length == 24 :
-          UDID = _udid[:8] + '-' + _udid[8:]
-        elif _udid_length == 40 :
-          UDID = _udid
-        subprocess.run("rm $HOME/.local/share/altlinux/log.txt",shell=True)
-        global InsAltStore
-        InsAltStoreCMD=f'''{("export ALTSERVER_ANISETTE_SERVER='http://127.0.0.1:6969' && $HOME/.local/share/altlinux/AltServer")} -u {UDID} -a {AppleID} -p {Password} {PATH} > {("$HOME/.local/share/altlinux/log.txt")}'''
-        InsAltStore=subprocess.Popen(InsAltStoreCMD, stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+        silentremove(f'{(altlinuxpath)}/ideviceinfo.txt')
+        subprocess.run(f'ideviceinfo > {(altlinuxpath)}/ideviceinfo.txt',shell=True)
+        result = "result"
+        pathsy = f'{(altlinuxpath)}/ideviceinfo.txt'
+        with open(pathsy) as file:
+          # Iterate through lines
+          for line in file.readlines():
+              # Find the start of the word
+              index = line.find('ProductVersion: ')
+              # If the word is inside the line
+              if index != -1:
+                result = line[:-1][16:]
+        silentremove(f'{(altlinuxpath)}/ideviceinfo.txt')
+        print(result)
+        if result >= "12.2" :
+          global savedcheck
+          global AppleID
+          global Password
+          if not savedcheck:
+            AppleID = self.entry1.get_text().lower()
+            Password = self.entry.get_text()
+          _udid = subprocess.check_output("lsusb -v 2> /dev/null | grep -e 'Apple Inc' -A 2 | grep iSerial | awk '{print $3}'",shell=True).decode().strip()
+          _udid_length = len(_udid)
+          if _udid_length == 24 :
+            UDID = _udid[:8] + '-' + _udid[8:]
+          elif _udid_length == 40 :
+            UDID = _udid
+          global InsAltStore
+          print(PATH)
+          silentremove(f'{(altlinuxpath)}/log.txt')
+          InsAltStoreCMD=f'''{("export ALTSERVER_ANISETTE_SERVER='http://127.0.0.1:6969' && $HOME/.local/share/altlinux/AltServer")} -u {UDID} -a {AppleID} -p {Password} {PATH} > {("$HOME/.local/share/altlinux/log.txt")}'''
+          InsAltStore=subprocess.Popen(InsAltStoreCMD, stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+        else :
+          global Failmsg
+          Failmsg = "iOS 12.2 or later is required."
+          dialog2 = DialogExample3(self)
+          dialog2.run()
+          dialog2.destroy() 
+          self.destroy()  
    def ermlol(self):
     Installing = True
     WarnTime=0
     global InsAltStore
-    while Installing :  
-      CheckExists=subprocess.run(f'test -f "$HOME/.local/share/altlinux/log.txt"',shell=True)
+    while Installing :
       CheckIns=subprocess.run(f'grep "Press any key to continue..." {("$HOME/.local/share/altlinux/log.txt")}',shell=True)
       CheckWarn=subprocess.run(f'grep "Are you sure you want to continue?" {("$HOME/.local/share/altlinux/log.txt")}',shell=True)
       CheckSuccess=subprocess.run(f'grep "Notify: Installation Succeeded" {("$HOME/.local/share/altlinux/log.txt")}',shell=True)
       Check2fa=subprocess.run(f'grep "Enter two factor code" {("$HOME/.local/share/altlinux/log.txt")}',shell=True)
-      if CheckIns.returncode == 0 or not CheckExists.returncode == 0:
+      if CheckIns.returncode == 0:
           InsAltStore.terminate()
           Installing = False
           global Failmsg
           Failmsg=subprocess.check_output(f"tail -6 {('$HOME/.local/share/altlinux/log.txt')}",shell=True).decode()
           dialog2 = DialogExample3(self)
           dialog2.run()
-          print('Fail!')
-          #self.fail()
           dialog2.destroy() 
-          self.destroy()  
+          self.destroy()
       if CheckWarn.returncode == 0 :
                 Installing = False
                 global Warnmsg
@@ -435,7 +481,6 @@ class login(Gtk.Window):
                   WarnTime = 1
                   Installing = True
                 elif response1 == Gtk.ResponseType.CANCEL:
-                  print('Cancelled. Fail!!')
                   dialog1.destroy()
                   os.system(f'pkill -TERM -P {InsAltStore.pid}') 
                   self.cancel()
@@ -447,14 +492,12 @@ class login(Gtk.Window):
             vercode = dialog.entry2.get_text()
             vercode = vercode+"\n"
             vercodebytes = bytes(vercode.encode())
-            print(vercodebytes)
             InsAltStore.communicate(input=vercodebytes)
             WarnTime == 1
             dialog.destroy()
             #self.destroy()
             Installing = True
           elif response == Gtk.ResponseType.CANCEL:
-            print('Cancelled. Fail!')
             os.system(f'pkill -TERM -P {InsAltStore.pid}') 
             self.cancel()
             WarnTime == 1
@@ -462,12 +505,11 @@ class login(Gtk.Window):
             self.destroy()
       if CheckSuccess.returncode == 0 :
           Installing = False
-          print('Success!')
           self.success()
           self.destroy() 
       #self.realthread1.join() 
+
    def success(self):
-      self.set_position(Gtk.WindowPosition.CENTER_ALWAYS)
       dialog = Gtk.MessageDialog(
             transient_for=self,
             flags=0,
@@ -479,9 +521,8 @@ class login(Gtk.Window):
             "Operation completed."
       )
       dialog.run()
-      print("INFO dialog closed")
-
       dialog.destroy()
+
 
    def cancel(self):
       self.set_position(Gtk.WindowPosition.CENTER_ALWAYS)
@@ -496,8 +537,6 @@ class login(Gtk.Window):
             "Operation cancelled by user"
       )
       dialog.run()
-      print("INFO dialog closed")
-
       dialog.destroy()
 
    def do_pulse(self, user_data):
@@ -514,7 +553,10 @@ class login(Gtk.Window):
             self.entry.set_visibility(False)
        self.entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, icon_name)
 
-class testing(Handy.Window):
+   def on_editable_toggled(self, widget):
+       print("lol")
+
+class PairWindow(Handy.Window):
     def __init__(self):
         super().__init__(title="Pair your device")
         self.present()
@@ -569,14 +611,13 @@ class testing(Handy.Window):
           )
 
           dialog.run()
-          print("INFO dialog closed")
         try:
           subprocess.run(['idevicepair pair'], shell=True, check=True, capture_output=True)
           self.destroy()
           global lolcheck
           global PATH
           if lolcheck == "altstr":
-            PATH = '$HOME/.local/share/altlinux/AltStore.ipa'
+            PATH = f'{(altlinuxpath)}/AltStore.ipa'
             win1()
           elif lolcheck == "ipa":
             on_file()
@@ -585,24 +626,25 @@ class testing(Handy.Window):
             PATH = FileChooserWindow().PATHFILE
             win1()
             ermcheck = False
-          elif lolcheck == "lol":
-            print('OK!!')
           lolcheck = "lol"
         except subprocess.CalledProcessError as e:
           #print (e.output)
-          errmoment = e.output
+          errmoment = e.output.decode("utf-8")
           dialog1 = Gtk.MessageDialog(
             transient_for=self,
             flags=0,
             message_type=Gtk.MessageType.ERROR,
             buttons=Gtk.ButtonsType.OK,
             #text=e.output,
-            text=(errmoment[:-2]),
+            text=(errmoment),
             #text.select_region(0,-1),
             )
           dialog1.run()
           dialog1.destroy()
-        dialog.destroy()
+        try:
+          dialog.destroy()
+        except:
+          pass
                 
 class FileChooserWindow(Gtk.Window):
     def __init__(self):
@@ -624,13 +666,10 @@ class FileChooserWindow(Gtk.Window):
 
         response = dialog.run()
         if response == Gtk.ResponseType.OK:
-            print("Open clicked")
-            print("File selected: " + dialog.get_filename())
             self.PATHFILE = dialog.get_filename()
             global ermcheck
             ermcheck = True
         elif response == Gtk.ResponseType.CANCEL:
-            print("Cancel clicked")
             self.destroy()
 
         dialog.destroy()
@@ -769,8 +808,7 @@ class Oops(Handy.Window):
       self.show_all()
       
    def on_info_clicked2(self, widget):
-     Gtk.main_quit()
-     os.kill(os.getpid(),signal.SIGKILL)
+     quitit()
 
 class OopsInternet(Handy.Window):
    def __init__(self):
@@ -798,7 +836,7 @@ class OopsInternet(Handy.Window):
       image.set_margin_top(10)
       vb.pack_start(image, True, True, 0)
 
-      lbl1 = Gtk.Label("AltLinux is unable to connect to the Internet.\nPlease connect to the Internet and restart AltLinux.")
+      lbl1 = Gtk.Label(label="AltLinux is unable to connect to the Internet.\nPlease connect to the Internet and restart AltLinux.")
       lbl1.set_property("margin_left", 15)
       lbl1.set_property("margin_right", 15)
       lbl1.set_justify(Gtk.Justification.CENTER)
@@ -817,13 +855,19 @@ class OopsInternet(Handy.Window):
       self.show_all()
       
    def on_info_clicked2(self, widget):
-     Gtk.main_quit()
-     os.kill(os.getpid(),signal.SIGKILL)
+     quitit()
 
 
 def notify():
   if(connectioncheck()) == True:
-    LatestVersion=subprocess.check_output("curl -Lsk https://github.com/maxasix/AltLinux/raw/main/version",shell=True).decode()
+    LatestVersion= (
+      urllib.request.urlopen(
+        "https://raw.githubusercontent.com/maxasix/AltLinux/main/resources/version"
+    )
+    .readline()
+    .rstrip()
+    .decode()
+    )
     if LatestVersion > LocalVersion :
       Notify.init("MyProgram")
       command2 = 'echo $XDG_CURRENT_DESKTOP | grep -q "GNOME"'
@@ -844,45 +888,82 @@ def notify():
 
 def showurl(_):
   Gtk.show_uri_on_window(None, "https://github.com/maxasix/AltLinux/releases", Gdk.CURRENT_TIME)
-  subprocess.run(f'killall {AltServer}',shell=True)
-  Gtk.main_quit()
-  os.kill(os.getpid(),signal.SIGKILL)
+  quitit()
 
 def on_file():
   win2 = FileChooserWindow()
 
+def quitit():
+  subprocess.run(f'killall {AltServer}',shell=True)
+  subprocess.run(f'killall {anisette_server}',shell=True)
+  Gtk.main_quit()
+  os.kill(os.getpid(),signal.SIGKILL)
+
 def lol(_):
-  window = testing() 
+  window = PairWindow() 
   window.show_all()
 
 def loloops():
   window = Oops()
-  window.connect("destroy", Gtk.main_quit) 
   window.show_all()
   
 def loloopsint():
-  window = OopsInternet() 
-  window.connect("destroy", Gtk.main_quit)
+  window = OopsInternet()
   window.show_all()
 
 def lol123(_):
     subprocess.run(f'killall {AltServer}',shell=True)
+    subprocess.run(f'killall {anisette_server}',shell=True)
     subprocess.run('idevicepair pair',shell=True)
-    subprocess.run(f'{AltServer} &> /dev/null &',shell=True)
+    subprocess.run(f'cd {(altlinuxpath)} && ./anisette_server &> /dev/null &',shell=True)
+    subprocess.run(f'export ALTSERVER_ANISETTE_SERVER="http://127.0.0.1:6969" & {(altlinuxpath)}/AltServer &> /dev/null &',shell=True)
+
+def winerm():
+          dialog = Gtk.MessageDialog(
+                #transient_for=self,
+                flags=0,
+                message_type=Gtk.MessageType.QUESTION,
+                buttons=Gtk.ButtonsType.YES_NO,
+                text="Do you want to login automatically?",
+          )
+          dialog.format_secondary_text(
+                "Your login and password have been saved earlier."
+          )
+          response = dialog.run()
+          if response == Gtk.ResponseType.YES:
+            global AppleID
+            global Password
+            f = open(f'{(altlinuxpath)}/saved.txt', "r")
+            for line in f:
+              AppleID, Password = line.split(':')
+            f.close()
+            print(AppleID, Password)
+            global savedcheck
+            savedcheck = True
+            login().on_click_me_clicked1()
+          else:
+            silentremove(f'{(altlinuxpath)}/saved.txt')
+            win3 = login()
+            win3.show_all()
+          dialog.destroy()
 
 def win1():
-  win3 = login()
-  win3.show_all()
+  if os.path.isfile(f'{(altlinuxpath)}/saved.txt'):
+    winerm()
+  else:
+    win3 = login()
+    win3.show_all()
 
 def win2(_):
-  win4 = login()
-  win4.show_all()
+  if os.path.isfile(f'{(altlinuxpath)}/saved.txt'):
+    winerm()
+  else:
+    win3 = login()
+    win3.show_all()
 
 def actionCallback(notification, action, user_data = None):
     Gtk.show_uri_on_window(None, "https://github.com/maxasix/AltLinux/releases", Gdk.CURRENT_TIME)
-    subprocess.run(f'killall {AltServer}',shell=True)
-    Gtk.main_quit()
-    os.kill(os.getpid(),signal.SIGKILL)
+    quitit()
 
 def launchatlogin1(_):
     global command_six
@@ -891,13 +972,19 @@ def launchatlogin1(_):
       os.popen(AutoStart).read()
       return True
     else :
-    #if file_exists :
-      subprocess.run(f'rm $HOME/.config/autostart/AltLinux.desktop',shell=True)
+      silentremove("$HOME/.config/autostart/AltLinux.desktop")
       return False
 
 def lol321():
   win321 = SplashScreen()
   win321.show_all()
+
+def silentremove(filename):
+    try:
+        os.remove(filename)
+    except OSError as e:
+        if e.errno != errno.ENOENT: # errno.ENOENT = no such file or directory
+            raise # re-raise exception if a different error occurred
 
 def splashcheck():
   global splcheck
@@ -908,9 +995,7 @@ def splashcheck():
     else:
       sleep(3)
 def quit(_):
-  subprocess.run(f'killall {AltServer}',shell=True)
-  Gtk.main_quit()
-  os.kill(os.getpid(),signal.SIGKILL)
+  quitit()
   
 if __name__ == "__main__":
   main()

@@ -2,15 +2,6 @@
 
 cd "$(dirname "$0")" || exit
 
-ALTSERVER_VERSION="v0.0.4"
-ALTSTORE_VERSION="1_5_1"
-
-if [ ! -f "./resources/AltServer" ]; then
-    curl -L "https://github.com/NyaMisty/AltServer-Linux/releases/download/$ALTSERVER_VERSION/AltServer-x86_64" > "./resources/AltServer"
-fi
-if [ ! -f "./resources/AltStore.ipa" ]; then
-    curl -L "https://cdn.altstore.io/file/altstore/apps/altstore/$ALTSTORE_VERSION.ipa" > "./resources/AltStore.ipa"
-fi
 if [ -d "./AltLinux/usr/lib" ]; then
     rm -rf "./AltServer/usr/lib"
 fi
