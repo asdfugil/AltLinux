@@ -2,6 +2,7 @@
 import os
 import errno
 from re import T
+from shutil import rmtree
 import gi
 import urllib.request
 from urllib.request import urlopen
@@ -442,7 +443,9 @@ class login(Gtk.Window):
           global InsAltStore
           print(PATH)
           silentremove(f'{(altlinuxpath)}/log.txt')
-          InsAltStoreCMD=f'''{("export ALTSERVER_ANISETTE_SERVER='http://127.0.0.1:6969' && $HOME/.local/share/altlinux/AltServer")} -u {UDID} -a {AppleID} -p {Password} {PATH} > {("$HOME/.local/share/altlinux/log.txt")}'''
+          if os.path.isdir(f'{ os.environ["HOME"] }/.adi') :
+            rmtree(f'{ os.environ["HOME"] }/.adi')
+          InsAltStoreCMD=f'''export ALTSERVER_ANISETTE_SERVER='http://127.0.0.1:6969' && {(AltServer)} -u {UDID} -a {AppleID} -p {Password} {PATH} > {("$HOME/.local/share/altlinux/log.txt")}'''
           InsAltStore=subprocess.Popen(InsAltStoreCMD, stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         else :
           global Failmsg
@@ -456,15 +459,20 @@ class login(Gtk.Window):
     WarnTime=0
     global InsAltStore
     while Installing :
-      CheckIns=subprocess.run(f'grep "Press any key to continue..." {("$HOME/.local/share/altlinux/log.txt")}',shell=True)
-      CheckWarn=subprocess.run(f'grep "Are you sure you want to continue?" {("$HOME/.local/share/altlinux/log.txt")}',shell=True)
-      CheckSuccess=subprocess.run(f'grep "Notify: Installation Succeeded" {("$HOME/.local/share/altlinux/log.txt")}',shell=True)
-      Check2fa=subprocess.run(f'grep "Enter two factor code" {("$HOME/.local/share/altlinux/log.txt")}',shell=True)
+      CheckIns=subprocess.run(f'grep "Press any key to continue..." {(altlinuxpath)}/log.txt',shell=True)
+      CheckWarn=subprocess.run(f'grep "Are you sure you want to continue?" {(altlinuxpath)}/log.txt',shell=True)
+      CheckSuccess=subprocess.run(f'grep "Notify: Installation Succeeded" {(altlinuxpath)}/log.txt',shell=True)
+      Check2fa=subprocess.run(f'grep "Enter two factor code" {(altlinuxpath)}/log.txt',shell=True)
       if CheckIns.returncode == 0:
           InsAltStore.terminate()
           Installing = False
           global Failmsg
-          Failmsg=subprocess.check_output(f"tail -6 {('$HOME/.local/share/altlinux/log.txt')}",shell=True).decode()
+          Failmsg=subprocess.check_output(f"tail -6 {(altlinuxpath)}/log.txt",shell=True).decode()
+         # with open(f'{(altlinuxpath)}/log.txt') as file:
+         #   # loop to read iterate
+         #   # last n lines and print it
+         #   for line in (file.readlines() [-6:]):
+         #       print(line, end ='')
           dialog2 = DialogExample3(self)
           dialog2.run()
           dialog2.destroy() 
@@ -581,7 +589,7 @@ class PairWindow(Handy.Window):
         image.set_margin_top(5)
         self.hbox.pack_start(image, True, True, 0)
         
-        lbl1 = Gtk.Label("Please make sure your device is connected to the computer.\nPress 'Pair' to pair your device.")
+        lbl1 = Gtk.Label(label="Please make sure your device is connected to the computer.\nPress 'Pair' to pair your device.")
         lbl1.set_property("margin_left", 15)
         lbl1.set_property("margin_right", 15)
         lbl1.set_margin_top(5)
@@ -687,7 +695,10 @@ class FileChooserWindow(Gtk.Window):
 
 class DialogExample(Gtk.Dialog):
     def __init__(self, parent):
+      if not savedcheck:
         super().__init__(title="Verification code", transient_for=parent, flags=0)
+      else:
+        super().__init__(title="Verification code", flags=0)
         self.present()
         self.add_buttons(
             Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OK, Gtk.ResponseType.OK
