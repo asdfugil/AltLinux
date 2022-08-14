@@ -9,7 +9,6 @@ from urllib.request import urlopen
 import subprocess
 import signal
 import threading
-from threading import Thread
 from time import sleep
 gi.require_version("Gtk", "3.0")
 gi.require_version("Handy", "1")
@@ -34,19 +33,19 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 ermcheck = False
 splcheck = False
+savedcheck = False
 InsAltStore = subprocess.Popen("test", stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
 lolcheck = "lol" # Redirects the user either to the login window, or to the file chooser dialog. If the "Pair" option was selected, it closes the dialog.
 AppleID = "lol"
 Password = "lol"
 Warnmsg = "warn"
-savedcheck = False
 Failmsg = "fail"
 nprogress = 0.5
 file_name = resource_path("resources/1.png")
 icon_name = "view-conceal-symbolic.symbolic"
 command_six = Gtk.CheckMenuItem(label='Launch at Login')
 AppIcon = resource_path("resources/2.png")
-anisette_server = "$HOME/.local/share/altlinux/anisette_server"
+#anisette_server = "$HOME/.local/share/altlinux/anisette_server"
 AltServer = "$HOME/.local/share/altlinux/AltServer"
 AltStore = "$HOME/.local/share/altlinux/AltStore.ipa"
 PATH = AltStore
@@ -160,7 +159,7 @@ def on_abtdlg(self):
   about.set_logo(pixbuf)
   about.set_program_name("AltLinux")
   about.set_version("0.4.2")
-  about.set_authors(['maxasix', 'AltServer-Linux', 'made by NyaMisty', 'Provision made by', 'Dadoum'])
+  about.set_authors(['maxasix', 'AltServer-Linux', 'made by NyaMisty''Dadoum'])#, 'Provision made by', 'Dadoum'])
   about.set_artists(['nebula'])
   about.set_comments("A GUI for AltServer-Linux written in Python.")
   about.set_website("https://github.com/maxasix/AltLinux")
@@ -268,41 +267,41 @@ class SplashScreen(Handy.Window):
       global installedcheck
       command1 = 'echo $XDG_CURRENT_DESKTOP | grep -q "GNOME"'
       #here comes the splash screen
-      self.lbl1.set_text("Checking if anisette_server is already running...")
+      #self.lbl1.set_text("Checking if anisette_server is already running...")
       self.loadaltlinux.set_fraction(0.1)
-      command = 'curl 127.0.0.1:6969 | grep -q "{"'
-      CheckRun=subprocess.run(command,shell=True)
-      if CheckRun.returncode == 0 :
-              self.loadaltlinux.set_fraction(0.8)
-      else :
-              if not os.path.isfile(f'{(altlinuxpath)}/anisette_server'):
-                self.lbl1.set_text("Downloading anisette_server...")
-                subprocess.run(f'curl -L https://github.com/Dadoum/Provision/releases/download/1.0.0/anisette_server-x86_64 > {(altlinuxpath)}/anisette_server',shell=True)
-                subprocess.run(f'chmod +x {(altlinuxpath)}/anisette_server',shell=True)
-                subprocess.run(f'chmod 755 {(altlinuxpath)}/anisette_server',shell=True)
-                self.loadaltlinux.set_fraction(0.2)
-                self.lbl1.set_text("Downloading Apple Music APK...")
-                CheckRunA=subprocess.run(f'curl https://apps.mzstatic.com/content/android-apple-music-apk/applemusic.apk --output {(altlinuxpath)}/am.apk',shell=True)
-                os.makedirs(f'{(altlinuxpath)}/lib/x86_64')
-                self.loadaltlinux.set_fraction(0.4)
-                self.lbl1.set_text("Extracting necessary libraries...")
-                CheckRunB=subprocess.run(f'unzip -j "{(altlinuxpath)}/am.apk" "lib/x86_64/libstoreservicescore.so" -d "{(altlinuxpath)}/lib/x86_64"', shell=True)
-                CheckRunC=subprocess.run(f'unzip -j "{(altlinuxpath)}/am.apk" "lib/x86_64/libCoreADI.so" -d "{(altlinuxpath)}/lib/x86_64"', shell=True)
-                silentremove(f'{(altlinuxpath)}/am.apk')
-                self.loadaltlinux.set_fraction(0.6)
-      self.lbl1.set_text("Starting anisette_server...")
-      subprocess.run(f'cd {(altlinuxpath)} && ./anisette_server &> /dev/null &',shell=True)
-      self.loadaltlinux.set_fraction(0.8)
-      finished = False
-      global nprogress
-      while not finished:
-              CheckRun5=subprocess.run(command,shell=True)
-              if CheckRun5.returncode == 0 :
-                finished = True
-              else :
-                  sleep(1)
-              nprogress = nprogress+0.1
-              self.loadaltlinux.set_fraction(nprogress)
+      #command = 'curl 127.0.0.1:6969 | grep -q "{"'
+      #CheckRun=subprocess.run(command,shell=True)
+      #if CheckRun.returncode == 0 :
+      #        self.loadaltlinux.set_fraction(0.8)
+      #else :
+      #        if not os.path.isfile(f'{(altlinuxpath)}/anisette_server'):
+      #          self.lbl1.set_text("Downloading anisette_server...")
+      #          subprocess.run(f'curl -L https://github.com/Dadoum/Provision/releases/download/1.0.0/anisette_server-x86_64 > {(altlinuxpath)}/anisette_server',shell=True)
+      #          subprocess.run(f'chmod +x {(altlinuxpath)}/anisette_server',shell=True)
+      #          subprocess.run(f'chmod 755 {(altlinuxpath)}/anisette_server',shell=True)
+      #          self.loadaltlinux.set_fraction(0.2)
+      #          self.lbl1.set_text("Downloading Apple Music APK...")
+      #          CheckRunA=subprocess.run(f'curl https://apps.mzstatic.com/content/android-apple-music-apk/applemusic.apk --output {(altlinuxpath)}/am.apk',shell=True)
+      #          os.makedirs(f'{(altlinuxpath)}/lib/x86_64')
+      #          self.loadaltlinux.set_fraction(0.4)
+      #          self.lbl1.set_text("Extracting necessary libraries...")
+      #          CheckRunB=subprocess.run(f'unzip -j "{(altlinuxpath)}/am.apk" "lib/x86_64/libstoreservicescore.so" -d "{(altlinuxpath)}/lib/x86_64"', shell=True)
+      #          CheckRunC=subprocess.run(f'unzip -j "{(altlinuxpath)}/am.apk" "lib/x86_64/libCoreADI.so" -d "{(altlinuxpath)}/lib/x86_64"', shell=True)
+      #          silentremove(f'{(altlinuxpath)}/am.apk')
+      #          self.loadaltlinux.set_fraction(0.6)
+      #self.lbl1.set_text("Starting anisette_server...")
+      #subprocess.run(f'cd {(altlinuxpath)} && ./anisette_server &> /dev/null &',shell=True)
+      #self.loadaltlinux.set_fraction(0.8)
+      #finished = False
+      #global nprogress
+      #while not finished:
+      #        CheckRun5=subprocess.run(command,shell=True)
+      #        if CheckRun5.returncode == 0 :
+      #          finished = True
+      #        else :
+      #            sleep(1)
+      #        nprogress = nprogress+0.1
+      #        self.loadaltlinux.set_fraction(nprogress)
       if not os.path.isfile(f'{(altlinuxpath)}/AltServer'):
               self.lbl1.set_text("Downloading AltServer...")
               self.loadaltlinux.set_fraction(nprogress+0.1)
@@ -322,7 +321,8 @@ class SplashScreen(Handy.Window):
       #        subprocess.run(f'chmod 755 {(altlinuxpath)}/netmuxd',shell=True)
       self.lbl1.set_text("Starting AltServer...")
       self.loadaltlinux.set_fraction(1.0)
-      subprocess.run(f'export ALTSERVER_ANISETTE_SERVER="http://127.0.0.1:6969" & {(altlinuxpath)}/AltServer &> /dev/null &',shell=True)
+      #subprocess.run(f'export ALTSERVER_ANISETTE_SERVER="http://127.0.0.1:6969" & {(altlinuxpath)}/AltServer &> /dev/null &',shell=True)
+      subprocess.run(f'{(altlinuxpath)}/AltServer &> /dev/null &',shell=True)
       global splcheck
       splcheck = True
       return 0
@@ -443,9 +443,11 @@ class login(Gtk.Window):
           global InsAltStore
           print(PATH)
           silentremove(f'{(altlinuxpath)}/log.txt')
+          f = open(f'{(altlinuxpath)}/log.txt', "w")
+          f.close()
           if os.path.isdir(f'{ os.environ["HOME"] }/.adi') :
             rmtree(f'{ os.environ["HOME"] }/.adi')
-          InsAltStoreCMD=f'''export ALTSERVER_ANISETTE_SERVER='http://127.0.0.1:6969' && {(AltServer)} -u {UDID} -a {AppleID} -p {Password} {PATH} > {("$HOME/.local/share/altlinux/log.txt")}'''
+          InsAltStoreCMD=f'''{(AltServer)} -u {UDID} -a {AppleID} -p {Password} {PATH} > {("$HOME/.local/share/altlinux/log.txt")}'''
           InsAltStore=subprocess.Popen(InsAltStoreCMD, stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         else :
           global Failmsg
@@ -468,11 +470,6 @@ class login(Gtk.Window):
           Installing = False
           global Failmsg
           Failmsg=subprocess.check_output(f"tail -6 {(altlinuxpath)}/log.txt",shell=True).decode()
-         # with open(f'{(altlinuxpath)}/log.txt') as file:
-         #   # loop to read iterate
-         #   # last n lines and print it
-         #   for line in (file.readlines() [-6:]):
-         #       print(line, end ='')
           dialog2 = DialogExample3(self)
           dialog2.run()
           dialog2.destroy() 
@@ -657,7 +654,7 @@ class PairWindow(Handy.Window):
 class FileChooserWindow(Gtk.Window):
     def __init__(self):
         super().__init__(title="FileChooser Example")
-        box = Gtk.Box(spacing=6)
+        box = Gtk.Box()
         self.add(box)
 
         dialog = Gtk.FileChooserDialog(
@@ -906,7 +903,7 @@ def on_file():
 
 def quitit():
   subprocess.run(f'killall {AltServer}',shell=True)
-  subprocess.run(f'killall {anisette_server}',shell=True)
+  #subprocess.run(f'killall {anisette_server}',shell=True)
   Gtk.main_quit()
   os.kill(os.getpid(),signal.SIGKILL)
 
@@ -924,10 +921,11 @@ def loloopsint():
 
 def lol123(_):
     subprocess.run(f'killall {AltServer}',shell=True)
-    subprocess.run(f'killall {anisette_server}',shell=True)
+    #subprocess.run(f'killall {anisette_server}',shell=True)
     subprocess.run('idevicepair pair',shell=True)
-    subprocess.run(f'cd {(altlinuxpath)} && ./anisette_server &> /dev/null &',shell=True)
-    subprocess.run(f'export ALTSERVER_ANISETTE_SERVER="http://127.0.0.1:6969" & {(altlinuxpath)}/AltServer &> /dev/null &',shell=True)
+    #subprocess.run(f'cd {(altlinuxpath)} && ./anisette_server &> /dev/null &',shell=True)
+    #subprocess.run(f'export ALTSERVER_ANISETTE_SERVER="http://127.0.0.1:6969" & {(altlinuxpath)}/AltServer &> /dev/null &',shell=True)
+    subprocess.run(f'{(altlinuxpath)}/AltServer &> /dev/null &',shell=True)
 
 def winerm():
           dialog = Gtk.MessageDialog(
