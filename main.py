@@ -85,7 +85,11 @@ def main():
       indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
       indicator.set_menu(menu())
       indicator.set_status(appindicator.IndicatorStatus.PASSIVE)
-      lol321()
+      if not os.path.isfile(f'{(altlinuxpath)}/AltServer') or not os.path.isfile(f'{(altlinuxpath)}/AltStore.ipa'):
+        lol321()
+      else :
+        subprocess.run(f'{(altlinuxpath)}/AltServer &> /dev/null &',shell=True)
+        indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
     else :
       loloopsint()
   else:
@@ -200,35 +204,14 @@ def altserverfile(_):
 class SplashScreen(Handy.Window):
     def __init__(self):
         super().__init__(title="Loading")
-        #self = Gtk.Window(Gtk.WindowType.POPUP)
         self.set_resizable( False )
-        #self = Handy.Window(Gtk.WindowType.POPUP)
         self.set_default_size(512, 288)
         self.present()
         self.set_position(Gtk.WindowPosition.CENTER_ALWAYS)
         self.set_keep_above(True)
-        # WindowHandle
-        self.handle = Handy.WindowHandle()
-        self.add(self.handle)                                                                                                                                                
-
-        # WinBox
-        self.winBox = Gtk.Box(spacing=0, orientation=Gtk.Orientation.VERTICAL)
-        self.handle.add(self.winBox)
-
-        # Revealer
-        self.revealer = Gtk.Revealer()
-        self.revealer.set_reveal_child(False)
-        self.winBox.pack_start(self.revealer, False, True, 0)
-
-        # Headerbar
-        self.hb = Handy.HeaderBar()
-        self.hb.set_show_close_button(True)
-        self.hb.props.title = "AltLinux"
-        self.revealer.add(self.hb)
-
-        # MainBox
+        
         self.mainBox = Gtk.Box(spacing=6, orientation=Gtk.Orientation.VERTICAL, halign=Gtk.Align.START, valign=Gtk.Align.START)
-        self.winBox.pack_start(self.mainBox, True, False, 0)
+        self.add(self.mainBox)
         
         pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(
         filename=os.path.join("resources/4.png"), 
@@ -240,16 +223,9 @@ class SplashScreen(Handy.Window):
         self.mainBox.pack_start(image, False, True, 0)
         
         self.lbl1 = Gtk.Label(label="Starting AltLinux...")
-        #lbl1.set_property("margin_left", 40)
-        #lbl1.set_property("margin_right", 40)
         self.mainBox.pack_start(self.lbl1, False, False, 6)
         self.loadaltlinux = Gtk.ProgressBar()
-        #self.progressbar.pulse()
         self.mainBox.pack_start(self.loadaltlinux, True, True, 0)
-
-        #GObject.signal_new("my-custom-signal", self, GObject.SignalFlags.RUN_LAST, GObject.TYPE_PYOBJECT,
-        #               (GObject.TYPE_PYOBJECT,))
-        #self.connect("my-custom-signal", self.lol321actualfunction)
         self.t = threading.Thread(target=self.lol321actualfunction)
         self.t.start()
         self.wait_for_t(self.t)
@@ -265,7 +241,6 @@ class SplashScreen(Handy.Window):
 
     def lol321actualfunction(self):
       global installedcheck
-      command1 = 'echo $XDG_CURRENT_DESKTOP | grep -q "GNOME"'
       #here comes the splash screen
       #self.lbl1.set_text("Checking if anisette_server is already running...")
       self.loadaltlinux.set_fraction(0.1)
@@ -335,14 +310,11 @@ class login(Gtk.Window):
         self.present()
         self.set_position(Gtk.WindowPosition.CENTER_ALWAYS)
         self.set_resizable( False )
-        #self.set_size_request(200, 100)
         self.set_border_width(10)
         
         grid = Gtk.Grid()
         self.add(grid)
         
-        #self.set_border_height(20)
-        #self.timeout_id = None
         label = Gtk.Label(label="Apple ID: ")
         label.set_justify(Gtk.Justification.LEFT)
         
@@ -355,7 +327,6 @@ class login(Gtk.Window):
         self.entry.set_visibility(False)
         global icon_name
         self.entry.set_icon_from_icon_name(Gtk.EntryIconPosition.SECONDARY, icon_name)
-        #self.entry.set_icon_activatable(Gtk.EntryIconPosition.SECONDARY, "view-reveal-symbolic.symbolic")
         self.entry.connect("icon-press", self.on_icon_toggled)
 
         self.button = Gtk.Button.new_with_label("Login")
@@ -365,16 +336,11 @@ class login(Gtk.Window):
         grid.attach(self.entry1, 1, 0, 2, 1)
         grid.attach_next_to(label1, label, Gtk.PositionType.BOTTOM, 1, 2)
         grid.attach(self.entry, 1, 2, 1, 1)
-        #grid.attach_next_to(self.icon, self.entry, Gtk.PositionType.RIGHT, 1, 1)
         grid.attach_next_to(self.button, self.entry, Gtk.PositionType.RIGHT, 1, 1)
 
    def on_click_me_clicked1(self):
-        #GObject.signal_new("my-custom-signal1", self, GObject.SignalFlags.RUN_LAST, GObject.TYPE_PYOBJECT,
-        #               (GObject.TYPE_PYOBJECT,))
-        #self.connect("my-custom-signal1", self.onclickmethread)
         self.realthread1 = threading.Thread(target=self.onclickmethread)
         self.realthread1.start()
-        #self.realthread1.join()
         GLib.idle_add(self.ermlol)
 
    def on_click_me_clicked(self, button):
@@ -406,12 +372,8 @@ class login(Gtk.Window):
         self.entry.set_editable(False)
         self.entry1.set_editable(False)
         self.button.set_sensitive(False)
-        #GObject.signal_new("my-custom-signal1", self, GObject.SignalFlags.RUN_LAST, GObject.TYPE_PYOBJECT,
-        #               (GObject.TYPE_PYOBJECT,))
-        #self.connect("my-custom-signal1", self.onclickmethread)
         self.realthread1 = threading.Thread(target=self.onclickmethread)
         self.realthread1.start()
-        #self.realthread1.join()
         GLib.idle_add(self.ermlol)
 
    def onclickmethread(self):
@@ -503,7 +465,6 @@ class login(Gtk.Window):
             InsAltStore.communicate(input=vercodebytes)
             TwoFactorTime = 1
             dialog.destroy()
-            #self.destroy()
             Installing = True
           elif response == Gtk.ResponseType.CANCEL:
             TwoFactorTime = 1
@@ -514,8 +475,7 @@ class login(Gtk.Window):
       elif CheckSuccess.returncode == 0 :
           Installing = False
           self.success()
-          self.destroy() 
-      #self.realthread1.join() 
+          self.destroy()
 
    def success(self):
       dialog = Gtk.MessageDialog(
@@ -636,16 +596,13 @@ class PairWindow(Handy.Window):
             ermcheck = False
           lolcheck = "lol"
         except subprocess.CalledProcessError as e:
-          #print (e.output)
           errmoment = e.output.decode("utf-8")
           dialog1 = Gtk.MessageDialog(
             transient_for=self,
             flags=0,
             message_type=Gtk.MessageType.ERROR,
             buttons=Gtk.ButtonsType.OK,
-            #text=e.output,
             text=(errmoment),
-            #text.select_region(0,-1),
             )
           dialog1.run()
           dialog1.destroy()
@@ -704,7 +661,6 @@ class DialogExample(Gtk.Dialog):
             Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OK, Gtk.ResponseType.OK
         )
         self.set_resizable( False )
-        #self.set_size_request(200, 100)
         self.set_border_width(10)
 
         labelhelp = Gtk.Label(label="Enter the verification \ncode on your device: ")
@@ -726,7 +682,6 @@ class DialogExample2(Gtk.Dialog):
             Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OK, Gtk.ResponseType.OK
         )
         self.set_resizable( False )
-        #self.set_size_request(200, 100)
         self.set_border_width(10)
 
         labelhelp = Gtk.Label(label="Are you sure you want to continue?")
@@ -752,7 +707,6 @@ class DialogExample3(Gtk.Dialog):
             Gtk.STOCK_OK, Gtk.ResponseType.OK
         )
         self.set_resizable( False )
-        #self.set_size_request(200, 100)
         self.set_border_width(10)
 
         labelhelp = Gtk.Label(label="AltServer has failed.")
@@ -777,6 +731,7 @@ class Oops(Handy.Window):
       self.set_resizable( False )
       self.set_size_request(450, 100)
       self.set_border_width(10)	
+
       # WindowHandle
       handle = Handy.WindowHandle()
       self.add(handle)
@@ -829,6 +784,7 @@ class OopsInternet(Handy.Window):
       self.set_resizable( False )
       self.set_size_request(450, 100)
       self.set_border_width(10)	
+      
       # WindowHandle
       handle = Handy.WindowHandle()
       self.add(handle)
