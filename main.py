@@ -461,12 +461,13 @@ class login(Gtk.Window):
    def ermlol(self):
     Installing = True
     WarnTime=0
+    TwoFactorTime=0
     global InsAltStore
     while Installing :
-      CheckIns=subprocess.run(f'grep "Press any key to continue..." {(altlinuxpath)}/log.txt',shell=True)
-      CheckWarn=subprocess.run(f'grep "Are you sure you want to continue?" {(altlinuxpath)}/log.txt',shell=True)
-      CheckSuccess=subprocess.run(f'grep "Notify: Installation Succeeded" {(altlinuxpath)}/log.txt',shell=True)
-      Check2fa=subprocess.run(f'grep "Enter two factor code" {(altlinuxpath)}/log.txt',shell=True)
+      CheckIns=subprocess.run(f'grep -F "Press any key to continue..." {(altlinuxpath)}/log.txt',shell=True)
+      CheckWarn=subprocess.run(f'grep -F "Are you sure you want to continue?" {(altlinuxpath)}/log.txt',shell=True)
+      CheckSuccess=subprocess.run(f'grep -F "Notify: Installation Succeeded" {(altlinuxpath)}/log.txt',shell=True)
+      Check2fa=subprocess.run(f'grep -F "Enter two factor code" {(altlinuxpath)}/log.txt',shell=True)
       if CheckIns.returncode == 0:
           InsAltStore.terminate()
           Installing = False
@@ -476,7 +477,7 @@ class login(Gtk.Window):
           dialog2.run()
           dialog2.destroy() 
           self.destroy()
-      if CheckWarn.returncode == 0 :
+      elif CheckWarn.returncode == 0 and WarnTime == 0:
                 Installing = False
                 global Warnmsg
                 Warnmsg=subprocess.check_output(f"tail -8 {('$HOME/.local/share/altlinux/log.txt')}",shell=True).decode()
@@ -491,7 +492,7 @@ class login(Gtk.Window):
                   dialog1.destroy()
                   os.system(f'pkill -TERM -P {InsAltStore.pid}') 
                   self.cancel()
-      if Check2fa.returncode == 0 and WarnTime == 0 :
+      elif Check2fa.returncode == 0 and TwoFactorTime == 0:
           Installing = False
           dialog = DialogExample(self)
           response = dialog.run()
@@ -500,17 +501,17 @@ class login(Gtk.Window):
             vercode = vercode+"\n"
             vercodebytes = bytes(vercode.encode())
             InsAltStore.communicate(input=vercodebytes)
-            WarnTime == 1
+            TwoFactorTime = 1
             dialog.destroy()
             #self.destroy()
             Installing = True
           elif response == Gtk.ResponseType.CANCEL:
+            TwoFactorTime = 1
             os.system(f'pkill -TERM -P {InsAltStore.pid}') 
             self.cancel()
-            WarnTime == 1
             dialog.destroy()
             self.destroy()
-      if CheckSuccess.returncode == 0 :
+      elif CheckSuccess.returncode == 0 :
           Installing = False
           self.success()
           self.destroy() 
