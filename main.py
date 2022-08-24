@@ -158,8 +158,8 @@ def on_abtdlg(self):
   pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(resource_path('resources/3.png'), width, height)
   about.set_logo(pixbuf)
   about.set_program_name("AltLinux")
-  about.set_version("0.4.2")
-  about.set_authors(['maxasix', 'AltServer-Linux', 'made by NyaMisty''Dadoum'])#, 'Provision made by', 'Dadoum'])
+  about.set_version("1.0")
+  about.set_authors(['maxasix', 'AltServer-Linux', 'made by NyaMisty'])#, 'Provision made by', 'Dadoum'])
   about.set_artists(['nebula'])
   about.set_comments("A GUI for AltServer-Linux written in Python.")
   about.set_website("https://github.com/maxasix/AltLinux")
@@ -269,6 +269,7 @@ class SplashScreen(Handy.Window):
       #here comes the splash screen
       #self.lbl1.set_text("Checking if anisette_server is already running...")
       self.loadaltlinux.set_fraction(0.1)
+      #[This is where Dadoum's anisette server is supposed to be, but the public server works at the moment]
       #command = 'curl 127.0.0.1:6969 | grep -q "{"'
       #CheckRun=subprocess.run(command,shell=True)
       #if CheckRun.returncode == 0 :
@@ -313,6 +314,7 @@ class SplashScreen(Handy.Window):
               self.loadaltlinux.set_fraction(nprogress+0.1)
               subprocess.run(f'curl -L https://cdn.altstore.io/file/altstore/apps/altstore/1_5_1.ipa > {(altlinuxpath)}/AltStore.ipa',shell=True)
               subprocess.run(f'chmod 755 {(altlinuxpath)}/AltStore.ipa',shell=True)
+      #[This is the part where netmuxd is downloaded, but it's too unstable to consider including at the moment]
       #if not os.path.isfile(f'{(altlinuxpath)}/netmuxd'):
       #        self.lbl1.set_text("Downloading netmuxd...")
       #        self.loadaltlinux.set_fraction(nprogress+0.1)
@@ -523,7 +525,7 @@ class login(Gtk.Window):
             text="Success!",
       )
       dialog.format_secondary_text(
-            "Operation completed."
+            "Operation completed"
       )
       dialog.run()
       dialog.destroy()
