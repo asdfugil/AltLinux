@@ -156,7 +156,7 @@ def on_abtdlg(self):
   pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(resource_path('resources/3.png'), width, height)
   about.set_logo(pixbuf)
   about.set_program_name("AltLinux")
-  about.set_version("1.0")
+  about.set_version("0.4.2-1")
   about.set_authors(['maxasix', 'AltServer-Linux', 'made by NyaMisty'])#, 'Provision made by', 'Dadoum'])
   about.set_artists(['nebula'])
   about.set_comments("A GUI for AltServer-Linux written in Python.")
