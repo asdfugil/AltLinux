@@ -99,8 +99,9 @@ cd AltLinux
 python3 main.py
 ```  
 
-## Arch Linux
+### Arch Linux
 
+Install the dependencies:
 ```
 sudo pacman -S binutils wget curl git python-pip libappindicator-gtk3 usbmuxd libimobiledevice avahi zlib unzip usbutils
 ```
