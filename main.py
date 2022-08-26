@@ -374,7 +374,7 @@ class login(Gtk.Window):
     TwoFactorTime=0
     global InsAltStore
     while Installing : 
-      CheckIns=subprocess.run(f'grep -F "Press any key to continue..." {(altlinuxpath)}/log.txt',shell=True)
+      CheckIns=subprocess.run(f'grep -F "Could not" {(altlinuxpath)}/log.txt',shell=True)
       CheckWarn=subprocess.run(f'grep -F "Are you sure you want to continue?" {(altlinuxpath)}/log.txt',shell=True)
       CheckSuccess=subprocess.run(f'grep -F "Notify: Installation Succeeded" {(altlinuxpath)}/log.txt',shell=True)
       Check2fa=subprocess.run(f'grep -F "Enter two factor code" {(altlinuxpath)}/log.txt',shell=True)
@@ -389,19 +389,31 @@ class login(Gtk.Window):
           self.destroy()
       elif CheckWarn.returncode == 0 and WarnTime == 0:
                 Installing = False
-                global Warnmsg
-                Warnmsg=subprocess.check_output(f"tail -8 {('$HOME/.local/share/altlinux/log.txt')}",shell=True).decode()
-                dialog1 = DialogExample2(self)
-                response1 = dialog1.run()
-                if response1 == Gtk.ResponseType.OK:
-                  dialog1.destroy()
-                  InsAltStore.communicate(input=b'\n')
-                  WarnTime = 1
-                  Installing = True
-                elif response1 == Gtk.ResponseType.CANCEL:
-                  dialog1.destroy()
-                  os.system(f'pkill -TERM -P {InsAltStore.pid}') 
-                  self.cancel()
+                word = "Are you sure you want to continue?"
+                # This fixes an issue where the warn window appears when it shouldn't
+                with open(f'{(altlinuxpath)}/log.txt', 'r') as file:
+                  # Read all content of the file
+                  content = file.read()
+                  # Check if a string present in the file
+                  if word in content:
+                      file.close()
+                      global Warnmsg
+                      Warnmsg=subprocess.check_output(f"tail -8 {('$HOME/.local/share/altlinux/log.txt')}",shell=True).decode()
+                      dialog1 = DialogExample2(self)
+                      response1 = dialog1.run()
+                      if response1 == Gtk.ResponseType.OK:
+                        dialog1.destroy()
+                        InsAltStore.communicate(input=b'\n')
+                        WarnTime = 1
+                        Installing = True
+                      elif response1 == Gtk.ResponseType.CANCEL:
+                        dialog1.destroy()
+                        os.system(f'pkill -TERM -P {InsAltStore.pid}') 
+                        self.cancel()
+                  else:
+                      file.close()
+                      WarnTime = 1
+                      Installing = True
       elif Check2fa.returncode == 0 and TwoFactorTime == 0:
           Installing = False
           dialog = DialogExample(self)
