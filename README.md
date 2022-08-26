@@ -33,7 +33,7 @@ python3 --version
 
 Download and install the DEB package [from here](https://github.com/maxasix/AltLinux/releases). 
 
-If your distribution isn't based on Ubuntu, you can [run the script without installing](#run-the-script-without-installing). It contains experimental Fedora instructions which may or may not work.
+If your distribution isn't based on Ubuntu, you can [run the script without installing](#run-the-script-without-installing). It contains experimental Fedora and Arch Linux instructions which may or may not work.
 
 ## Uninstall AltLinux
 
@@ -99,7 +99,26 @@ cd AltLinux
 python3 main.py
 ```  
 
-## Compile the package
+## Arch Linux
+
+```
+sudo pacman -S binutils wget curl git python-pip libappindicator-gtk3 usbmuxd libimobiledevice avahi zlib unzip usbutils
+```
+
+Run the following commands:
+```
+git clone https://github.com/maxasix/AltLinux
+```  
+
+```
+cd AltLinux
+```  
+
+```
+python3 main.py
+```  
+
+## Compile the DEB package
 Add the `universe` repository:
 
 ```
