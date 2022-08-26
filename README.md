@@ -33,6 +33,15 @@ python3 --version
 
 Download and install the DEB package [from here](https://github.com/maxasix/AltLinux/releases). 
 
+IF YOU'RE RUNNING UBUNTU 20.04 OR ITS DERIVATIVES:
+```
+sudo add-apt-repository ppa:apandada1/libhandy-1
+sudo apt update
+sudo apt install libhandy-1-0 libhandy-1-dev
+```
+
+Then install the DEB package [from here](https://github.com/maxasix/AltLinux/releases).
+
 If your distribution isn't based on Ubuntu, you can [run the script without installing](#run-the-script-without-installing). It contains experimental Fedora and Arch Linux instructions which may or may not work.
 
 ## Uninstall AltLinux
@@ -65,6 +74,13 @@ Install the dependencies:
 ```
 sudo apt-get install binutils python3-pip git gir1.2-appindicator3-0.1 usbmuxd libimobiledevice6 libimobiledevice-utils wget curl libavahi-compat-libdnssd-dev zlib1g-dev unzip usbutils
 ``` 
+
+IF YOU'RE RUNNING UBUNTU 20.04 OR ITS [DERIVATIVES](https://github.com/maxasix/AltLinux#install-altlinux):
+```
+sudo add-apt-repository ppa:apandada1/libhandy-1
+sudo apt update
+sudo apt install libhandy-1-0 libhandy-1-dev
+```
 
 Run the following commands:
 ```
