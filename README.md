@@ -146,6 +146,13 @@ Install the dependencies:
 ```
 sudo apt-get install binutils python3-pip git gir1.2-appindicator3-0.1 usbmuxd libimobiledevice6 libimobiledevice-utils wget curl libavahi-compat-libdnssd-dev zlib1g-dev unzip usbutils
 ```  
+
+IF YOU'RE RUNNING UBUNTU 20.04 OR ITS [DERIVATIVES](https://github.com/maxasix/AltLinux#install-altlinux):
+```
+sudo add-apt-repository ppa:apandada1/libhandy-1
+sudo apt update
+sudo apt install libhandy-1-0 libhandy-1-dev
+```
   
 Install pyinstaller:
 
