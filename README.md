@@ -15,7 +15,7 @@ The program is in its very early state, so if you're experiencing issues or want
 
 ## Install AltLinux
 
-AltLinux is available for Ubuntu 22.04, Ubuntu 20.04, and Ubuntu 18.04. Only x86_64 architecture is supported at the moment.
+AltLinux is available for Ubuntu 22.04 and Ubuntu 20.04. Only x86_64 architecture is supported at the moment.
 
 Derivatives, such as Linux Mint and Pop!_ OS should also work. To make sure which DEB package to pick, run the following command:
 
@@ -31,7 +31,7 @@ python3 --version
 | elementary OS 7      | elementary OS 6   |
 | Zorin OS 17          | Zorin OS 16       |
 
-Download and install the DEB package [from here](https://github.com/maxasix/AltLinux/releases). 
+If you're running Ubuntu 22.04 or any distro based on it (such as Mint 21), install the DEB package [from here](https://github.com/maxasix/AltLinux/releases). 
 
 If you're running Ubuntu 20.04 or any distro based on it (such as Mint 20), run the following commands:
 ```
@@ -40,7 +40,7 @@ sudo apt update
 sudo apt install libhandy-1-0 libhandy-1-dev
 ```
 
-Then install the DEB package [from here](https://github.com/maxasix/AltLinux/releases).
+Then you can install the DEB package [from here](https://github.com/maxasix/AltLinux/releases).
 
 If your distribution isn't based on Ubuntu, you can [run the script without installing](#run-the-script-without-installing). It contains experimental Fedora and Arch Linux instructions which may or may not work.
 
