@@ -11,9 +11,7 @@ fi
 
 pyinstaller altlinux.spec --clean
 cp -R ./resources ./dist/altlinux
-if [ ! -d "./AltLinux/usr/lib" ]; then
-    mkdir "./AltLinux/usr/lib"
-fi
+mkdir -p "./AltLinux/usr/lib"
 
 cp -R ./dist/altlinux ./AltLinux/usr/lib
 chmod -R 0775 AltLinux
