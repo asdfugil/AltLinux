@@ -33,7 +33,7 @@ python3 --version
 
 Download and install the DEB package [from here](https://github.com/maxasix/AltLinux/releases). 
 
-IF YOU'RE RUNNING UBUNTU 20.04 OR ITS DERIVATIVES:
+If you're running Ubuntu 20.04 or any distro based on it (such as Mint 20), run the following commands:
 ```
 sudo add-apt-repository ppa:apandada1/libhandy-1
 sudo apt update
@@ -147,7 +147,7 @@ Install the dependencies:
 sudo apt-get install binutils python3-pip git gir1.2-appindicator3-0.1 usbmuxd libimobiledevice6 libimobiledevice-utils wget curl libavahi-compat-libdnssd-dev zlib1g-dev unzip usbutils
 ```  
 
-IF YOU'RE RUNNING UBUNTU 20.04 OR ITS [DERIVATIVES](https://github.com/maxasix/AltLinux#install-altlinux):
+If you're running Ubuntu 20.04 or any distro based on it (such as Mint 20), run the following commands:
 ```
 sudo add-apt-repository ppa:apandada1/libhandy-1
 sudo apt update
