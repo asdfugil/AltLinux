@@ -23,13 +23,13 @@ Derivatives, such as Linux Mint and Pop!_ OS should also work. To make sure whic
 python3 --version
 ```
 
-| Python 3.10          | Python 3.8        | Python 3.6            |
-|:--------------------:|:-----------------:|:---------------------:|
-| Ubuntu 22.04         | Ubuntu 20.04      | Ubuntu 18.04          |
-| Pop!_OS 22.04        | Pop!_OS 20.04     | Pop!_OS 18.04         |
-| Linux Mint 21        | Linux Mint 20     | Linux Mint 19         |
-| elementary OS 7      | elementary OS 6   | elementary OS 5       |
-| Zorin OS 17          | Zorin OS 16       | Zorin OS 15           |
+| Python 3.10          | Python 3.8        |
+|:--------------------:|:-----------------:|
+| Ubuntu 22.04         | Ubuntu 20.04      |
+| Pop!_OS 22.04        | Pop!_OS 20.04     |
+| Linux Mint 21        | Linux Mint 20     |
+| elementary OS 7      | elementary OS 6   |
+| Zorin OS 17          | Zorin OS 16       |
 
 Download and install the DEB package [from here](https://github.com/maxasix/AltLinux/releases). 
 
