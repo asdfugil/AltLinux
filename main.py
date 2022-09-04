@@ -77,7 +77,12 @@ def main():
   if CheckRun8.returncode == 0 : 
     file_name = resource_path("resources/1.png") # If GNOME, use the b&w tray icon
   else :
-    file_name = resource_path("resources/2.png") # If other DE, use a colored tray icon
+    command2 = 'echo $XDG_CURRENT_DESKTOP | grep -q "X-Cinnamon"' # Check if the current DE is Cinnamon
+    CheckRunLol=subprocess.run(command2,shell=True)
+    if CheckRunLol.returncode == 0 :
+      file_name = resource_path("resources/1.png") # If Cinnamon, use the b&w tray icon
+    else :
+      file_name = resource_path("resources/2.png") # If other DE, use a colored tray icon
   if CheckRun8.returncode == 1 or (CheckRun8.returncode == 0 and Gtk.StatusIcon.is_embedded) :
     if connectioncheck() :
       global indicator
@@ -156,7 +161,7 @@ def on_abtdlg(self):
   pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(resource_path('resources/3.png'), width, height)
   about.set_logo(pixbuf)
   about.set_program_name("AltLinux")
-  about.set_version("0.4.2-1")
+  about.set_version("0.4.2-2")
   about.set_authors(['maxasix', 'AltServer-Linux', 'made by NyaMisty'])#, 'Provision made by', 'Dadoum'])
   about.set_artists(['nebula'])
   about.set_comments("A GUI for AltServer-Linux written in Python.")
@@ -396,7 +401,6 @@ class login(Gtk.Window):
                   content = file.read()
                   # Check if a string present in the file
                   if word in content:
-                      file.close()
                       global Warnmsg
                       Warnmsg=subprocess.check_output(f"tail -8 {('$HOME/.local/share/altlinux/log.txt')}",shell=True).decode()
                       dialog1 = DialogExample2(self)
@@ -411,7 +415,6 @@ class login(Gtk.Window):
                         os.system(f'pkill -TERM -P {InsAltStore.pid}') 
                         self.cancel()
                   else:
-                      file.close()
                       WarnTime = 1
                       Installing = True
       elif Check2fa.returncode == 0 and TwoFactorTime == 0:
@@ -798,11 +801,16 @@ def notify():
     if LatestVersion > LocalVersion :
       Notify.init("MyProgram")
       command2 = 'echo $XDG_CURRENT_DESKTOP | grep -q "GNOME"'
+      command3 = 'echo $XDG_CURRENT_DESKTOP | grep -q "X-Cinnamon"'
       CheckRun9=subprocess.run(command2,shell=True)
       if CheckRun9.returncode == 0 :
         file_name1 = resource_path("resources/1.png")
       else :
-        file_name1 = resource_path("resources/2.png")
+        CheckRun10=subprocess.run(command3,shell=True)
+        if CheckRun10.returncode == 0 :
+          file_name1 = resource_path("resources/1.png")
+        else :
+          file_name1 = resource_path("resources/2.png")
       n = Notify.Notification.new("An update is available!","Click 'Download Update' in the tray menu.", os.path.abspath(file_name1))
       n.set_timeout(Notify.EXPIRES_DEFAULT)
       #n.add_action("newupd", "Download", actionCallback)
