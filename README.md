@@ -44,7 +44,7 @@ Then you can install the DEB package [from here](https://github.com/maxasix/AltL
 
 If you use Arch Linux, there is [an AUR package](https://aur.archlinux.org/packages/altlinux) available. You can install it from the AUR repository.
 
-If you use Fedora, [run the script without installing](#run-the-script-without-installing).
+If you use Fedora, you can [run the script without installing](#run-the-script-without-installing).
 
 ## Uninstall AltLinux
 
