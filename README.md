@@ -15,7 +15,11 @@ The program is in its very early state, so if you're experiencing issues or want
 
 ## Install AltLinux
 
-AltLinux is available for Ubuntu 22.04 and Ubuntu 20.04. Only x86_64 architecture is supported at the moment.
+Only x86_64 architecture is supported at the moment.
+
+If you use Arch Linux, there is [an AUR package](https://aur.archlinux.org/packages/altlinux) available. You can install it from the AUR repository.
+
+AltLinux is also available for Ubuntu 22.04 and Ubuntu 20.04. 
 
 Derivatives, such as Linux Mint and Pop!_ OS should also work. To make sure which DEB package to pick, run the following command:
 
