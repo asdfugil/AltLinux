@@ -15,11 +15,7 @@ The program is in its very early state, so if you're experiencing issues or want
 
 ## Install AltLinux
 
-Only x86_64 architecture is supported at the moment.
-
-If you use Arch Linux, there is [an AUR package](https://aur.archlinux.org/packages/altlinux) available. You can install it from the AUR repository.
-
-AltLinux is also available for Ubuntu 22.04 and Ubuntu 20.04. 
+AltLinux is available for Ubuntu 22.04 and Ubuntu 20.04. 
 
 Derivatives, such as Linux Mint and Pop!_ OS should also work. To make sure which DEB package to pick, run the following command:
 
@@ -46,7 +42,9 @@ sudo apt install libhandy-1-0 libhandy-1-dev
 
 Then you can install the DEB package [from here](https://github.com/maxasix/AltLinux/releases).
 
-If your distribution isn't based on Ubuntu, you can [run the script without installing](#run-the-script-without-installing). It contains experimental Fedora and Arch Linux instructions which may or may not work.
+If you use Arch Linux, there is [an AUR package](https://aur.archlinux.org/packages/altlinux) available. You can install it from the AUR repository.
+
+If you use Fedora, [run the script without installing](#run-the-script-without-installing).
 
 ## Uninstall AltLinux
 
